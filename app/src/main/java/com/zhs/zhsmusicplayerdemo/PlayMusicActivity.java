@@ -69,9 +69,9 @@ public class PlayMusicActivity extends Activity {
         public void handleMessage(Message msg){
             switch ((msg.what)){
                 case 0:
-                    int position=audioService.player.getCurrentPosition();
-                    int time=audioService.player.getDuration();
-                    int max=seekBar.getMax();
+                    int position = audioService.player.getCurrentPosition();
+                    int time = audioService.player.getDuration();
+                    int max = seekBar.getMax();
                     seekBar.setProgress(position*max/time);
                     break;
                 default:

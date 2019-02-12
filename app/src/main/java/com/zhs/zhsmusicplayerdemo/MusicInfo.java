@@ -6,6 +6,8 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by 木头 on 2017/3/2.
@@ -54,8 +56,14 @@ public class MusicInfo {
                 String songName = "";
                 String singerName = "";
                 try {
-                    songName = ISO2GBK(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
-                    singerName = ISO2GBK(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
+                    songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                    if(isMessyCode(songName)){
+                        songName = "未知";
+                    }
+                    singerName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                    if(isMessyCode(singerName)){
+                        singerName = "未知";
+                    }
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -79,12 +87,37 @@ public class MusicInfo {
     }
 
 
-    static String ISO2GBK(String rawString) {
+    static boolean isMessyCode(String strName) {
         try {
-            return new String(rawString.getBytes("ISO-8859-1"), "GBK");
+            Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
+            Matcher m = p.matcher(strName);
+            String after = m.replaceAll("");
+            String temp = after.replaceAll("\\p{P}", "");
+            char[] ch = temp.trim().toCharArray();
+
+            int length = (ch != null) ? ch.length : 0;
+            for (int i = 0; i < length; i++) {
+                char c = ch[i];
+
+                if (!Character.isLetterOrDigit(c)) {
+                    String str = "" + ch[i];
+                    if (!str.matches("[\u4e00-\u9fa5]+")) {
+                        return true;
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "未知";
+
+        return false;
     }
+//    static String ISO2GBK(String rawString) {
+//        try {
+//            return new String(rawString.getBytes("ISO-8859-1"), "GBK");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "未知";
+//    }
 }

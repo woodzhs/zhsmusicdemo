@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,9 +30,7 @@ public class MymusicFragment extends Fragment {
 
     private ListView listView;
     public List<MusicInfo> ret=new ArrayList<>();
-    private static String path="/sdcard/Musicdemo/";
-
-//    private List<MusicInfo> ret=new ArrayList<>();
+    private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";
 
     public AudioService audioService;
 

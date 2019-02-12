@@ -26,14 +26,14 @@ import java.util.List;
 public class PopularMusic extends Fragment {
 
     private ListView listView1;
-    public List<MusicInfo> ret1=new ArrayList<>();
+    public List<MusicInfo> ret1 = new ArrayList<>();
     MusicAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View chatView = inflater.inflate(R.layout.popularmusic, container,false);
         listView1 = (ListView)chatView.findViewById(R.id.listView1);
-         adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret1);
+         adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1);
         listView1.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return chatView;
@@ -52,7 +52,7 @@ public class PopularMusic extends Fragment {
     public void getInternetData()
     {
         ret1.clear();
-        Loadhtml loadhtml =new Loadhtml();
+        Loadhtml loadhtml = new Loadhtml();
         loadhtml.execute("");
     }
     class Loadhtml extends AsyncTask<String, String, String>

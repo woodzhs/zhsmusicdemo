@@ -16,7 +16,7 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
 
     MediaPlayer player;
 
-    static String form="";
+    static String form = "";
 
     private final IBinder binder = new AudioBinder();
     @Override
@@ -44,7 +44,7 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
     public void onCreate(){
         super.onCreate();
         //我们从raw文件夹中获取一个应用自带的mp3文件
-        player=new MediaPlayer();
+        player = new MediaPlayer();
         player.setOnCompletionListener(this);
     }
 

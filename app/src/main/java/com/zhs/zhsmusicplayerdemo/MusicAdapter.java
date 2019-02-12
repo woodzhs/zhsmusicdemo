@@ -16,15 +16,15 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
     private int resourceId;
     public MusicAdapter(Context context, int textViewResourceId, List<MusicInfo> objects){
         super(context,textViewResourceId,objects);
-        resourceId=textViewResourceId;
+        resourceId = textViewResourceId;
     }
 
     @Override
     public View getView(int position, View converView, ViewGroup parent){
-        MusicInfo musicInfo=getItem(position);
-        View view= LayoutInflater.from(getContext()).inflate(resourceId,null);
-        TextView songname=(TextView) view.findViewById(R.id.song_name);
-        TextView singername=(TextView) view.findViewById(R.id.singer_name);
+        MusicInfo musicInfo = getItem(position);
+        View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+        TextView songname = (TextView) view.findViewById(R.id.song_name);
+        TextView singername = (TextView) view.findViewById(R.id.singer_name);
         songname.setText(musicInfo.getSongName());
         singername.setText(musicInfo.getSingerName());
         return view;
