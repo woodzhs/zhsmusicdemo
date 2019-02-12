@@ -31,6 +31,7 @@ public class PlayMusicActivity extends Activity {
     private ImageView last;
     private ImageView pause;
     private ImageView next;
+    private ImageView back;
     private TextView name;
     private TextView song;
     private int currentMusicIndex;
@@ -93,6 +94,7 @@ public class PlayMusicActivity extends Activity {
         pause = (ImageView) findViewById(R.id.pause);
         last = (ImageView) findViewById(R.id.last);
         next = (ImageView) findViewById(R.id.next);
+        back = (ImageView) findViewById(R.id.title_back);
         name = (TextView) findViewById(R.id.name);
         song = (TextView) findViewById(R.id.song);
         seekBar = (SeekBar) findViewById(R.id.music_bar);
@@ -103,12 +105,19 @@ public class PlayMusicActivity extends Activity {
         name.setText(ret.get(currentMusicIndex).getSingerName());
         song.setText(ret.get(currentMusicIndex).getSongName());
         startMusic();
+        back.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        finish();
+                                    }
+                                }
+        );
         pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (audioService != null)
-                    audioService.pauseMusic();
-            }
+                @Override
+                public void onClick(View v) {
+                    if (audioService != null)
+                        audioService.pauseMusic();
+                }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override

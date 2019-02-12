@@ -37,30 +37,30 @@ public class MusicInfo {
         this.filePath=null;
 
     }
+
     public static List<MusicInfo> getAllMusicFiles(String path) {
 
         List<MusicInfo> result = new ArrayList<>();
         File[] allFiles = new File(path).listFiles();
-        try
-        {
-            for (int i = 0; i < allFiles.length; i++) {
-                File file = allFiles[i];
-                String filepath = file.getAbsolutePath();
-                //  Log.e("TAG", "filepath  is " + filepath);
-                //            提取音乐歌名歌手名
+
+        for (int i = 0; i < allFiles.length; i++) {
+            File file = allFiles[i];
+            String filepath = file.getAbsolutePath();
+            //  Log.e("TAG", "filepath  is " + filepath);
+            //            提取音乐歌名歌手名
+            try {
                 MediaMetadataRetriever mmr = new MediaMetadataRetriever();
                 mmr.setDataSource(filepath);
-
 
                 String songName = "";
                 String singerName = "";
                 try {
                     songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-                    if(isMessyCode(songName)){
+                    if (isMessyCode(songName)) {
                         songName = "未知";
                     }
                     singerName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                    if(isMessyCode(singerName)){
+                    if (isMessyCode(singerName)) {
                         singerName = "未知";
                     }
                 } catch (Exception e) {
@@ -73,13 +73,15 @@ public class MusicInfo {
                 musicInfo.songName = songName;
                 musicInfo.singerName = singerName;
                 result.add(musicInfo);
+            } catch (Exception e) {
 
+                e.printStackTrace();
+                continue;
             }
 
-        }catch (Exception e)
-        {
-            e.printStackTrace();
         }
+
+
 
 
         return result;
