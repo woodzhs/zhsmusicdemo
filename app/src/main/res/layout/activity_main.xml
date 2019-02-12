@@ -8,7 +8,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.zhs.zhsmusicplayerdemo.MainActivity">
+    tools:context="com.zhs.zhsmusicplayerdemo.Activities.MainActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -20,34 +20,51 @@
 
     </android.support.v4.view.ViewPager>
 
+
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:background="#f20b0b"
+        android:padding="9dp"
+        android:background="#a30500"
         android:id="@+id/linearLayout2">
 
-        <Button
+        <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text=" My Music"
+            android:layout_height="30dp"
             android:id="@+id/myMusic"
+            android:src="@drawable/musictap"
+            android:scaleType="centerInside"
+            android:background="#a30500"
             android:layout_weight="1"/>
 
-        <Button
+        <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Search"
+            android:layout_height="30dp"
             android:id="@+id/search"
+            android:src="@drawable/searchtap"
+            android:scaleType="centerInside"
+            android:background="#a30500"
             android:layout_weight="1"/>
 
-        <Button
+        <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Popular Music"
+            android:layout_height="30dp"
             android:id="@+id/popularMusic"
+            android:src="@drawable/rangetap"
+            android:scaleType="centerInside"
+            android:background="#a30500"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/usercenterbtn"
+            android:src="@drawable/usercentertap"
+            android:scaleType="centerInside"
+            android:background="#a30500"
             android:layout_weight="1"/>
     </LinearLayout>
 </RelativeLayout>

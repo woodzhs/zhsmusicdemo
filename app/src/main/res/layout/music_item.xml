@@ -2,19 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:layout_centerHorizontal="true"
+              android:layout_alignParentBottom="true"
+              android:paddingTop="10dp"
+              android:paddingLeft="10dp"
               android:orientation="horizontal">
 
     <TextView
         android:id="@+id/song_name"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/singer_name"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-
+        android:layout_height="30dp"
         android:layout_marginLeft="10dip"
         android:layout_weight="1"/>
 
