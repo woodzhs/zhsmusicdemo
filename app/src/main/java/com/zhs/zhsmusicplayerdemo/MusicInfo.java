@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by 木头 on 2017/3/2.
+ * Created by 木头 on 2019/2/2.
  */
 public class MusicInfo {
     String singerName;

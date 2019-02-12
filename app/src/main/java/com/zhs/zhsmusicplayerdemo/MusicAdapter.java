@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by 木头 on 2016/11/22.
+ * Created by 木头 on 2019/2/2.
  */
 public class MusicAdapter extends ArrayAdapter<MusicInfo> {
     private int resourceId;
