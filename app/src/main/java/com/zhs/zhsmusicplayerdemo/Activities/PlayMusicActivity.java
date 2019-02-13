@@ -100,6 +100,7 @@ public class PlayMusicActivity extends Activity {
         unbindService(conn);
         audioService.stopSelf();
         record.clearAnimation();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -229,21 +230,28 @@ public class PlayMusicActivity extends Activity {
         Intent intent = new Intent(this, AudioService.class);
         this.bindService(intent, conn, Context.BIND_AUTO_CREATE);
 
-        final int milliseconds=1;
-        new Thread(){
+        mHandler.postDelayed(new Runnable() {
             @Override
-            public void run(){
-                while(true){
-                    try{
-                        sleep(milliseconds);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-
-                    mHandler.sendEmptyMessage(0);
-                }
+            public void run() {
+                mHandler.sendEmptyMessage(0);
+                mHandler.postDelayed(this,1000);
             }
-        }.start();
+        },1000);
+//        final int milliseconds=1;
+//        new Thread(){
+//            @Override
+//            public void run(){
+//                while(true){
+//                    try{
+//                        sleep(milliseconds);
+//                    }catch (InterruptedException e){
+//                        e.printStackTrace();
+//                    }
+//
+//                    mHandler.sendEmptyMessage(0);
+//                }
+//            }
+//        }.start();
 
     }
 

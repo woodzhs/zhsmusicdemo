@@ -49,53 +49,53 @@ public class MusicInfo {
 
         List<MusicInfo> result = new ArrayList<>();
         File[] allFiles = new File(path).listFiles();
-
-        for (int i = 0; i < allFiles.length; i++) {
-            File file = allFiles[i];
-            String filepath = file.getAbsolutePath();
-            //  Log.e("TAG", "filepath  is " + filepath);
-            //            提取音乐歌名歌手名
-            try {
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(filepath);
-
-                String songName = "";
-                String singerName = "";
-                String duration = "";
+        try{
+            for (int i = 0; i < allFiles.length; i++) {
+                File file = allFiles[i];
+                String filepath = file.getAbsolutePath();
+                //  Log.e("TAG", "filepath  is " + filepath);
+                //            提取音乐歌名歌手名
                 try {
-                    songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-                    if (isMessyCode(songName)) {
-                        songName = "未知";
+                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                    mmr.setDataSource(filepath);
+
+                    String songName = "";
+                    String singerName = "";
+                    String duration = "";
+                    try {
+                        songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                        if (isMessyCode(songName)) {
+                            songName = "未知";
+                        }
+                        singerName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                        if (isMessyCode(singerName)) {
+                            singerName = "未知";
+                        }
+                        duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                        if(isMessyCode(duration)){
+                            duration = null;
+                        }
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
                     }
-                    singerName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                    if (isMessyCode(singerName)) {
-                        singerName = "未知";
-                    }
-                    duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                    if(isMessyCode(duration)){
-                        duration = null;
-                    }
+
+                    MusicInfo musicInfo = new MusicInfo();
+                    musicInfo.filePath = filepath;
+                    musicInfo.songName = songName;
+                    musicInfo.singerName = singerName;
+                    musicInfo.duration = duration;
+                    result.add(musicInfo);
                 } catch (Exception e) {
 
                     e.printStackTrace();
+                    continue;
                 }
 
-                MusicInfo musicInfo = new MusicInfo();
-                musicInfo.filePath = filepath;
-                musicInfo.songName = songName;
-                musicInfo.singerName = singerName;
-                musicInfo.duration = duration;
-                result.add(musicInfo);
-            } catch (Exception e) {
-
-                e.printStackTrace();
-                continue;
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-
 
         return result;
     }
