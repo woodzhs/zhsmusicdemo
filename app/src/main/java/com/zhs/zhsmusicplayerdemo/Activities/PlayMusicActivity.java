@@ -97,7 +97,7 @@ public class PlayMusicActivity extends Activity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        this.unbindService(conn);
+        unbindService(conn);
         audioService.stopSelf();
         record.clearAnimation();
     }
