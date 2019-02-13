@@ -60,6 +60,7 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/record"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
@@ -107,13 +108,40 @@
             />
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/music_bar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linear"
-        android:layout_marginBottom="10dp"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:max="100"/>
+        android:padding="5dp"
+        android:layout_above="@id/linear"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/curtime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+        <SeekBar
+            android:id="@+id/music_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:layout_gravity="center"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:max="100"/>
+
+        <TextView
+            android:id="@+id/endtime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

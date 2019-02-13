@@ -15,6 +15,8 @@ public class MusicInfo {
     String singerName;
     String songName;
     String filePath;
+    String duration;
+
 
     public String getSingerName() {
         return singerName;
@@ -28,13 +30,18 @@ public class MusicInfo {
         return filePath;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
     public MusicInfo(){
 
     }
     public MusicInfo(String a,String b){
-        this.songName=a;
-        this.singerName=b;
-        this.filePath=null;
+        this.songName = a;
+        this.singerName = b;
+        this.filePath = null;
+        this.duration = null;
 
     }
 
@@ -54,6 +61,7 @@ public class MusicInfo {
 
                 String songName = "";
                 String singerName = "";
+                String duration = "";
                 try {
                     songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
                     if (isMessyCode(songName)) {
@@ -62,6 +70,10 @@ public class MusicInfo {
                     singerName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
                     if (isMessyCode(singerName)) {
                         singerName = "未知";
+                    }
+                    duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    if(isMessyCode(duration)){
+                        duration = null;
                     }
                 } catch (Exception e) {
 
@@ -72,6 +84,7 @@ public class MusicInfo {
                 musicInfo.filePath = filepath;
                 musicInfo.songName = songName;
                 musicInfo.singerName = singerName;
+                musicInfo.duration = duration;
                 result.add(musicInfo);
             } catch (Exception e) {
 

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,14 +68,25 @@ public class PopularMusic extends Fragment {
             try {
                 doc = Jsoup.connect("http://music.baidu.com/tag/%E6%B5%81%E8%A1%8C").timeout(5000).get();
                 Document content = Jsoup.parse(doc.toString());
-                Elements divs = content.select("#main");
-                Elements lis = divs.get(0).select("li");
-                for(Element li : lis)
+                Elements ul = content.select(".th-songlist");
+                Elements divs = ul.select(".info");
+//                Elements lis = divs.get(0).select("li");
+                for(Element div : divs)
                 {
-                    Elements spans =li.select("span");
-                    if(spans.size()==3)
+                    Elements spans =div.select("span");
+                    Elements elements1 = spans.select(".name");
+                    Elements elements2 = spans.select(".author");
+                    String name = "";
+                    String singer = "";
+                    if(!elements1.isEmpty()){
+                        name = elements1.get(0).text();
+                    }
+                    if(!elements2.isEmpty()){
+                        singer = elements2.get(0).text();
+                    }
+                    if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(singer))
                     {
-                        MusicInfo newitem=new MusicInfo(spans.get(0).text(),spans.get(2).text());
+                        MusicInfo newitem=new MusicInfo(name,singer);
                         ret1.add(newitem);
                        // Log.d("music",String.format("name : %s singer: %s",spans.get(0).text(),spans.get(2).text()));
                     }

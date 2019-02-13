@@ -1,5 +1,7 @@
 package com.zhs.zhsmusicplayerdemo.Activities;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,8 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,7 +21,9 @@ import com.zhs.zhsmusicplayerdemo.Model.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,11 +35,15 @@ public class PlayMusicActivity extends Activity {
     private ImageView pause;
     private ImageView next;
     private ImageView back;
+    private ImageView record;
     private TextView name;
     private TextView song;
+    private TextView curTime;
+    private TextView endTime;
     private int currentMusicIndex;
     private String data1;
     private SeekBar seekBar;
+    private ObjectAnimator animator;
     public List<MusicInfo> ret = new ArrayList<>();
 
 
@@ -60,24 +67,23 @@ public class PlayMusicActivity extends Activity {
 //                    currentMusicIndex++;
 //                    audioService.initMediaPlayer(ret.get(currentMusicIndex).filePath);
 //                    audioService.playMusic();
-                    playeNextMusic();
+                    playNextMusic();
                 }
             });
         }
 
 
     };
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public android.os.Handler mHandler=new android.os.Handler(){
+
+
+    public  android.os.Handler mHandler=new android.os.Handler(){
         @Override
         public void handleMessage(Message msg){
             switch ((msg.what)){
                 case 0:
                     int position = audioService.player.getCurrentPosition();
                     int time = audioService.player.getDuration();
+                    curTime.setText(formatTime(position));
                     int max = seekBar.getMax();
                     seekBar.setProgress(position*max/time);
                     break;
@@ -87,6 +93,15 @@ public class PlayMusicActivity extends Activity {
         }
     };
 
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        this.unbindService(conn);
+        audioService.stopSelf();
+        record.clearAnimation();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +110,11 @@ public class PlayMusicActivity extends Activity {
         last = (ImageView) findViewById(R.id.last);
         next = (ImageView) findViewById(R.id.next);
         back = (ImageView) findViewById(R.id.title_back);
+        record = (ImageView) findViewById(R.id.record);
         name = (TextView) findViewById(R.id.name);
         song = (TextView) findViewById(R.id.song);
+        curTime = (TextView) findViewById(R.id.curtime);
+        endTime = (TextView) findViewById(R.id.endtime);
         seekBar = (SeekBar) findViewById(R.id.music_bar);
         Intent intent = getIntent();
         data1 = intent.getStringExtra("extra_data1");
@@ -104,11 +122,20 @@ public class PlayMusicActivity extends Activity {
         ret = MusicInfo.getAllMusicFiles(data1);
         name.setText(ret.get(currentMusicIndex).getSingerName());
         song.setText(ret.get(currentMusicIndex).getSongName());
+        endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
+        curTime.setText(this.formatTime(0));
+        animator = ObjectAnimator.ofFloat(record, "rotation", 0f, 360.0f);
+        animator.setDuration(10000);
+        animator.setInterpolator(new LinearInterpolator());//匀速
+        animator.setRepeatCount(-1);//设置动画重复次数（-1代表一直转）
+        animator.setRepeatMode(ValueAnimator.RESTART);//动画重复模式
         startMusic();
+        animator.start();
         back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         finish();
+
                                     }
                                 }
         );
@@ -117,29 +144,25 @@ public class PlayMusicActivity extends Activity {
                 public void onClick(View v) {
                     if (audioService != null)
                         audioService.pauseMusic();
+                        if(animator.isPaused()){
+                            animator.resume();
+                        }else {
+                            animator.pause();
+                        }
                 }
         });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playeNextMusic();
+                playNextMusic();
             }
         });
+
         last.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (audioService != null && currentMusicIndex != 0) {
-                    audioService.initMediaPlayer(ret.get(--currentMusicIndex).getFilePath());
-                    name.setText(ret.get(currentMusicIndex).getSingerName());
-                    song.setText(ret.get(currentMusicIndex).getSongName());
-                    audioService.playMusic();
-                } else {
-                    currentMusicIndex = ret.size() - 1;
-                    audioService.initMediaPlayer(ret.get(currentMusicIndex).getFilePath());
-                    name.setText(ret.get(currentMusicIndex).getSingerName());
-                    song.setText(ret.get(currentMusicIndex).getSongName());
-                    audioService.playMusic();
-                }
+                playLastMusic();
             }
         });
 
@@ -168,7 +191,7 @@ public class PlayMusicActivity extends Activity {
 
     }
 
-    public void playeNextMusic() {
+    public void playNextMusic() {
         if (audioService != null && currentMusicIndex != ret.size() - 1) {
             audioService.initMediaPlayer(ret.get(++currentMusicIndex).getFilePath());
             name.setText(ret.get(currentMusicIndex).getSingerName());
@@ -181,6 +204,25 @@ public class PlayMusicActivity extends Activity {
             song.setText(ret.get(currentMusicIndex).getSongName());
             audioService.playMusic();
         }
+        endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
+//        animator.start();
+    }
+
+    public void playLastMusic() {
+        if (audioService != null && currentMusicIndex != 0) {
+            audioService.initMediaPlayer(ret.get(--currentMusicIndex).getFilePath());
+            name.setText(ret.get(currentMusicIndex).getSingerName());
+            song.setText(ret.get(currentMusicIndex).getSongName());
+            audioService.playMusic();
+        } else {
+            currentMusicIndex = ret.size() - 1;
+            audioService.initMediaPlayer(ret.get(currentMusicIndex).getFilePath());
+            name.setText(ret.get(currentMusicIndex).getSingerName());
+            song.setText(ret.get(currentMusicIndex).getSongName());
+            audioService.playMusic();
+        }
+        endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
+        animator.start();
     }
 
     public void startMusic() {
@@ -204,5 +246,14 @@ public class PlayMusicActivity extends Activity {
         }.start();
 
     }
+
+    private String formatTime(int length){
+        Date date = new Date(length);
+        //时间格式化工具
+        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+        String totalTime = sdf.format(date);
+        return totalTime;
+    }
+
 
 }

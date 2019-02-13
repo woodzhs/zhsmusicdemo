@@ -85,7 +85,7 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     public void onDestroy(){
-        //super.onDestroy();
+        super.onDestroy();
         if(player.isPlaying()){
             player.stop();
         }
