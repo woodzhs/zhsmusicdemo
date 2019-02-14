@@ -49,22 +49,16 @@ public class MymusicFragment extends Fragment {
     };
 
 
-    private Intent intent;
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View content = inflater.inflate(R.layout.fragment_mymusic, container,false);
-        //listView.invalidate();
         startMusic();
         listView = (ListView)content.findViewById(R.id.listView);
         ret.clear();
         ret=MusicInfo.getAllMusicFiles(path);
         MusicAdapter adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret);
 
-        ListView listView=(ListView)content.findViewById(R.id.listView);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

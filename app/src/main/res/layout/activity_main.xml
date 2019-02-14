@@ -28,34 +28,34 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:padding="9dp"
-        android:background="#a30500"
+        android:background="#ff0000"
         android:id="@+id/linearLayout2">
 
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:id="@+id/myMusic"
+            android:id="@+id/mymusicbtn"
             android:src="@drawable/musictap"
             android:scaleType="centerInside"
-            android:background="#a30500"
+            android:background="#ff0000"
             android:layout_weight="1"/>
 
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:id="@+id/search"
+            android:id="@+id/searchbtn"
             android:src="@drawable/searchtap"
             android:scaleType="centerInside"
-            android:background="#a30500"
+            android:background="#ff0000"
             android:layout_weight="1"/>
 
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:id="@+id/popularMusic"
+            android:id="@+id/popularmusicbtn"
             android:src="@drawable/rangetap"
             android:scaleType="centerInside"
-            android:background="#a30500"
+            android:background="#ff0000"
             android:layout_weight="1"/>
 
         <ImageButton
@@ -64,7 +64,7 @@
             android:id="@+id/usercenterbtn"
             android:src="@drawable/usercentertap"
             android:scaleType="centerInside"
-            android:background="#a30500"
+            android:background="#ff0000"
             android:layout_weight="1"/>
     </LinearLayout>
 </RelativeLayout>

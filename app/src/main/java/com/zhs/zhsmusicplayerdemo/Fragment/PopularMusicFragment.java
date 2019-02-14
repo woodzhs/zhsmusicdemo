@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by 木头 on 2019/2/7.
  */
-public class PopularMusic extends Fragment {
+public class PopularMusicFragment extends Fragment {
 
     private ListView listView1;
     public List<MusicInfo> ret1 = new ArrayList<>();
@@ -41,6 +41,7 @@ public class PopularMusic extends Fragment {
         adapter.notifyDataSetChanged();
         return chatView;
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
@@ -58,6 +59,7 @@ public class PopularMusic extends Fragment {
         Loadhtml loadhtml = new Loadhtml();
         loadhtml.execute("");
     }
+
     class Loadhtml extends AsyncTask<String, String, String>
     {
         ProgressDialog bar;
@@ -70,7 +72,6 @@ public class PopularMusic extends Fragment {
                 Document content = Jsoup.parse(doc.toString());
                 Elements ul = content.select(".th-songlist");
                 Elements divs = ul.select(".info");
-//                Elements lis = divs.get(0).select("li");
                 for(Element div : divs)
                 {
                     Elements spans =div.select("span");
@@ -92,20 +93,6 @@ public class PopularMusic extends Fragment {
                     }
 
                 }
-//                Document divcontions = Jsoup.parse(divs.toString());
-//                Elements element = divcontions.getElementsByTag("li");
-//                Log.d("element", element.toString());
-//                for(Element links : element)
-//                {
-//                    String title = links.getElementsByTag("a").text();
-//
-//                    String link   = links.select("a").attr("href").replace("/", "").trim();
-//                    String url  = "http://music.163.com/#/discover/toplist"+link;
-//                    ContentValues values = new ContentValues();
-//                    values.put("Title", title);
-//                    values.put("Url", url);
-//
-//                }
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -120,7 +107,7 @@ public class PopularMusic extends Fragment {
             super.onPostExecute(result);
             //            Log.d("doc", doc.toString().trim());
             bar.dismiss();
-            PopularMusic.this.adapter.notifyDataSetChanged();
+            PopularMusicFragment.this.adapter.notifyDataSetChanged();
 
         }
 

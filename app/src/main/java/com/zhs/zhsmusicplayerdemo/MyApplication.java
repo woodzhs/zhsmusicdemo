@@ -1,4 +1,4 @@
-package com.zhs.zhsmusicplayerdemo.Activities;
+package com.zhs.zhsmusicplayerdemo;
 
 import android.app.Application;
 

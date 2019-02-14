@@ -5,12 +5,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.zhs.zhsmusicplayerdemo.Fragment.FragmentAdapter;
 import com.zhs.zhsmusicplayerdemo.Fragment.MymusicFragment;
-import com.zhs.zhsmusicplayerdemo.Fragment.PopularMusic;
+import com.zhs.zhsmusicplayerdemo.Fragment.PopularMusicFragment;
+import com.zhs.zhsmusicplayerdemo.Fragment.UserCenterFragment;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Fragment.SearchFragment;
 
@@ -25,33 +25,35 @@ public class MainActivity extends FragmentActivity {
 
     private FragmentAdapter mFragmentAdapter;
 
-    ArrayList<View> viewContainter = new ArrayList<View>();
-
     private MymusicFragment mymusicFragment;
     private SearchFragment searchFragment;
-    private PopularMusic popularMusic;
+    private PopularMusicFragment popularMusicFragment;
+    private UserCenterFragment userCenterFragment;
 
     private ImageButton myMusicBtn;
     private ImageButton searchBtn;
     private ImageButton popularMusicbtn;
+    private ImageButton userCenterbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myMusicBtn = (ImageButton) findViewById(R.id.myMusic);
-        searchBtn = (ImageButton) findViewById(R.id.search);
-        popularMusicbtn = (ImageButton) findViewById(R.id.popularMusic);
+        myMusicBtn = (ImageButton) findViewById(R.id.mymusicbtn);
+        searchBtn = (ImageButton) findViewById(R.id.searchbtn);
+        popularMusicbtn = (ImageButton) findViewById(R.id.popularmusicbtn);
+        userCenterbtn = (ImageButton) findViewById(R.id.usercenterbtn);
 
         mymusicFragment = new MymusicFragment();
         searchFragment = new SearchFragment();
-        popularMusic = new PopularMusic();
-
+        popularMusicFragment = new PopularMusicFragment();
+        userCenterFragment = new UserCenterFragment();
 
         mFragmentList.add(mymusicFragment);
         mFragmentList.add(searchFragment);
-        mFragmentList.add(popularMusic);
+        mFragmentList.add(popularMusicFragment);
+        mFragmentList.add(userCenterFragment);
 
         viewPager = (ViewPager)findViewById(R.id.viewpager);
 
@@ -77,7 +79,14 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(2);
-                popularMusic.getInternetData();
+                popularMusicFragment.getInternetData();
+            }
+        });
+
+        userCenterbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(3);
             }
         });
 
