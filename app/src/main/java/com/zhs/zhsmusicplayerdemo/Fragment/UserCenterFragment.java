@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.zhs.zhsmusicplayerdemo.Activities.ChangePasswordActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.DescribeActivity;
+import com.zhs.zhsmusicplayerdemo.Activities.LoginActivityChoice;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.R;
 
@@ -19,6 +20,7 @@ public class UserCenterFragment extends Fragment {
     private LinearLayout changePassword;
     private LinearLayout about;
     private LinearLayout useHelp;
+    private LinearLayout exit;
 
     private String curAccount;
     private String curPassword;
@@ -31,6 +33,7 @@ public class UserCenterFragment extends Fragment {
         changePassword = (LinearLayout) content.findViewById(R.id.changepassword);
         about = (LinearLayout) content.findViewById(R.id.about);
         useHelp = (LinearLayout) content.findViewById(R.id.usehelp);
+        exit = (LinearLayout) content.findViewById(R.id.exit);
 
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +59,14 @@ public class UserCenterFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),DescribeActivity.class);
                 intent.putExtra("type",2);
+                startActivity(intent);
+            }
+        });
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),LoginActivityChoice.class);
                 startActivity(intent);
             }
         });
