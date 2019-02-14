@@ -14,6 +14,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ public class PlayMusicActivity extends Activity {
     private ImageView last;
     private ImageView pause;
     private ImageView next;
-    private ImageView back;
+    private LinearLayout back;
     private ImageView record;
     private TextView name;
     private TextView song;
@@ -110,7 +111,7 @@ public class PlayMusicActivity extends Activity {
         pause = (ImageView) findViewById(R.id.pause);
         last = (ImageView) findViewById(R.id.last);
         next = (ImageView) findViewById(R.id.next);
-        back = (ImageView) findViewById(R.id.title_back);
+        back = (LinearLayout) findViewById(R.id.titlebar);
         record = (ImageView) findViewById(R.id.record);
         name = (TextView) findViewById(R.id.name);
         song = (TextView) findViewById(R.id.song);

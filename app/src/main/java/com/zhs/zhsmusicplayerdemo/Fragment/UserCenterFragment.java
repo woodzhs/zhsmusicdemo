@@ -1,5 +1,6 @@
 package com.zhs.zhsmusicplayerdemo.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zhs.zhsmusicplayerdemo.Activities.DescribeActivity;
+import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.R;
 
 public class UserCenterFragment extends Fragment {
@@ -35,14 +38,18 @@ public class UserCenterFragment extends Fragment {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getActivity(),DescribeActivity.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
             }
         });
 
         useHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getActivity(),DescribeActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
             }
         });
 
