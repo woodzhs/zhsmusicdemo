@@ -66,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
      * 跳转到下一个页面
      */
     private void jumpNextPage() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        startActivity(new Intent(SplashActivity.this, LoginActivityChoice.class));
         finish();
     }
 

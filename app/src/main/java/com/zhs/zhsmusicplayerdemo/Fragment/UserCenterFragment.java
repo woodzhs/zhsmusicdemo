@@ -55,4 +55,8 @@ public class UserCenterFragment extends Fragment {
 
         return content;
     }
+
+    public void setAccount(String curaccount){
+        account.setText(curaccount);
+    }
 }

@@ -1,5 +1,6 @@
 package com.zhs.zhsmusicplayerdemo.Activities;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -34,6 +35,8 @@ public class MainActivity extends FragmentActivity {
     private ImageButton searchBtn;
     private ImageButton popularMusicbtn;
     private ImageButton userCenterbtn;
+
+    private String currentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,9 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(3);
+                Intent intent = getIntent();
+                currentAccount = intent.getStringExtra("account");
+                userCenterFragment.setAccount(currentAccount);
             }
         });
 

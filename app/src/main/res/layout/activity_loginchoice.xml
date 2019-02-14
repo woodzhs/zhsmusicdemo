@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:padding="10dp"
+        android:text="欢迎"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:background="#ff0000"
+        android:textAlignment="textStart"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/usercentertap"
+        android:layout_marginBottom="100dp"/>
+
+
+    <Button
+        android:id="@+id/choiselogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登陆"
+        android:textColor="#000000"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/choiseregist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注册"
+        android:textColor="#000000"
+        android:textSize="18dp"/>
+
+
+
+</LinearLayout>
