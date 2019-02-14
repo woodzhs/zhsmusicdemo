@@ -37,6 +37,8 @@ public class MainActivity extends FragmentActivity {
     private ImageButton userCenterbtn;
 
     private String currentAccount;
+    private String currentpassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,8 @@ public class MainActivity extends FragmentActivity {
                 viewPager.setCurrentItem(3);
                 Intent intent = getIntent();
                 currentAccount = intent.getStringExtra("account");
-                userCenterFragment.setAccount(currentAccount);
+                currentpassword = intent.getStringExtra("password");
+                userCenterFragment.setUser(currentAccount,currentpassword);
             }
         });
 

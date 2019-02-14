@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zhs.zhsmusicplayerdemo.Activities.ChangePasswordActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.DescribeActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.R;
@@ -19,8 +20,11 @@ public class UserCenterFragment extends Fragment {
     private LinearLayout about;
     private LinearLayout useHelp;
 
+    private String curAccount;
+    private String curPassword;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View content = inflater.inflate(R.layout.fragment_usercenter, container,false);
         account = (TextView) content.findViewById(R.id.account);
@@ -31,7 +35,10 @@ public class UserCenterFragment extends Fragment {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getActivity(),ChangePasswordActivity.class);
+                intent.putExtra("account",curAccount);
+                intent.putExtra("password",curPassword);
+                startActivity(intent);
             }
         });
 
@@ -56,7 +63,9 @@ public class UserCenterFragment extends Fragment {
         return content;
     }
 
-    public void setAccount(String curaccount){
+    public void setUser(String curaccount,String curpassword){
         account.setText(curaccount);
+        this.curAccount = curaccount;
+        this.curPassword = curpassword;
     }
 }

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
-import com.zhs.zhsmusicplayerdemo.Model.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 
 import org.jsoup.Jsoup;

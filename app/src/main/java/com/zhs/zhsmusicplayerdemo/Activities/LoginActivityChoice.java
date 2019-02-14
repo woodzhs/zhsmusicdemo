@@ -30,7 +30,7 @@ public class LoginActivityChoice extends Activity {
         regist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivityChoice.this,RegistActivity.class);
+                Intent intent=new Intent(LoginActivityChoice.this,RegisterActivity.class);
                 startActivity(intent);
             }
         });

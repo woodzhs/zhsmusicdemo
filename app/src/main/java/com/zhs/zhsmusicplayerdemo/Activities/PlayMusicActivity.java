@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.zhs.zhsmusicplayerdemo.Model.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 

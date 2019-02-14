@@ -1,4 +1,4 @@
-package com.zhs.zhsmusicplayerdemo.Model;
+package com.zhs.zhsmusicplayerdemo.Model.MusicDao;
 
 import android.media.MediaMetadataRetriever;
 
@@ -126,12 +126,5 @@ public class MusicInfo {
 
         return false;
     }
-//    static String ISO2GBK(String rawString) {
-//        try {
-//            return new String(rawString.getBytes("ISO-8859-1"), "GBK");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "未知";
-//    }
+
 }

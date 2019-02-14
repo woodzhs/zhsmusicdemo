@@ -36,7 +36,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <EditText
-            android:id="@+id/registaccount"
+            android:id="@+id/registeraccount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"/>
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <EditText
-            android:id="@+id/registpassword"
+            android:id="@+id/registerpassword"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"/>
@@ -65,7 +65,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/regist"
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="注册"

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.zhs.zhsmusicplayerdemo.Model.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 
 import java.util.List;

@@ -13,14 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
-import com.zhs.zhsmusicplayerdemo.Model.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
