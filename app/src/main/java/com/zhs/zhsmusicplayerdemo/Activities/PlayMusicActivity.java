@@ -42,7 +42,7 @@ public class PlayMusicActivity extends Activity {
     private TextView curTime;
     private TextView endTime;
     private int currentMusicIndex;
-    private String data1;
+//    private String data1;
     private SeekBar seekBar;
     private ObjectAnimator animator;
     public List<MusicInfo> ret = new ArrayList<>();
@@ -119,9 +119,9 @@ public class PlayMusicActivity extends Activity {
         endTime = (TextView) findViewById(R.id.endtime);
         seekBar = (SeekBar) findViewById(R.id.music_bar);
         Intent intent = getIntent();
-        data1 = intent.getStringExtra("extra_data1");
+//        data1 = intent.getStringExtra("extra_data1");
+        ret = intent.getExtras().getParcelableArrayList("List");
         currentMusicIndex = intent.getIntExtra("extra_data2", 0);
-        ret = MusicInfo.getAllMusicFiles(data1);
         name.setText(ret.get(currentMusicIndex).getSingerName());
         song.setText(ret.get(currentMusicIndex).getSongName());
         endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));

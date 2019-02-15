@@ -1,6 +1,8 @@
 package com.zhs.zhsmusicplayerdemo.Model.MusicDao;
 
 import android.media.MediaMetadataRetriever;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by 木头 on 2019/2/2.
  */
-public class MusicInfo {
+public class MusicInfo implements Parcelable {
     String singerName;
     String songName;
     String filePath;
@@ -126,5 +128,36 @@ public class MusicInfo {
 
         return false;
     }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel,int flags){
+        parcel.writeString(singerName);
+        parcel.writeString(songName);
+        parcel.writeString(filePath);
+        parcel.writeString(duration);
+
+    }
+
+    public static final Parcelable.Creator<MusicInfo> CREATOR = new Creator<MusicInfo>() {
+        @Override
+        public MusicInfo createFromParcel(Parcel source) {
+            MusicInfo app = new MusicInfo();
+            app.singerName = source.readString();
+            app.songName = source.readString();
+            app.filePath = source.readString();
+            app.duration = source.readString();
+            return app;
+        }
+
+        @Override
+        public MusicInfo[] newArray(int size) {
+            return new MusicInfo[size];
+        }
+    };
 
 }

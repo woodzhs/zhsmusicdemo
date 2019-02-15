@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,10 +69,11 @@ public class MymusicFragment extends Fragment {
                     audioService.initMediaPlayer(ret.get(position).getFilePath());
                     audioService.playMusic();
                 }
-                String data1=path;
+                Bundle data1 = new Bundle();
+                data1.putParcelableArrayList("List",(ArrayList<? extends Parcelable>) ret);
                 int data2=position;
                 Intent intent=new Intent(getActivity(),PlayMusicActivity.class);
-                intent.putExtra("extra_data1",data1);
+                intent.putExtras(data1);
                 intent.putExtra("extra_data2",data2);
                 startActivity(intent);
             }

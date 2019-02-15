@@ -7,7 +7,11 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.zhs.zhsmusicplayerdemo.Activities.LoginActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
@@ -63,22 +69,39 @@ public class SearchFragment extends Fragment {
         listView = (ListView)content.findViewById(R.id.listView1);
         ret1.clear();
         ret1 = MusicInfo.getAllMusicFiles(path);
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 0){
+
+                }else {
+                    showListView();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ret2.clear();
                 String inputText=input.getText().toString();
-               // Log.d("ret2", inputText);
-                for(int i = 0; i < ret1.size();i++){
-                    if(inputText.equals(ret1.get(i).getSongName())||inputText.equals(ret1.get(i).getSingerName())){
-                        ret2.add(ret1.get(i));
-                        Log.d("ret2",ret1.get(i).getSongName());
-
+                if(TextUtils.isEmpty(inputText.trim())){
+                    Toast.makeText(getActivity(),"请输入搜索内容",Toast.LENGTH_SHORT).show();
+                } else {
+                    if(ret2.isEmpty()){
+                        Toast.makeText(getActivity(),"对不起，没有你要的内容",Toast.LENGTH_SHORT).show();
                     }
                 }
-                MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
 
             }
         });
@@ -92,10 +115,11 @@ public class SearchFragment extends Fragment {
                     audioService.initMediaPlayer(ret2.get(position).getFilePath());
                     audioService.playMusic();
                 }
-                String data1 = path;
+                Bundle data1 = new Bundle();
+                data1.putParcelableArrayList("List",(ArrayList<? extends Parcelable>) ret2);
                 int data2 = position;
                 Intent intent = new Intent(getActivity(),PlayMusicActivity.class);
-                intent.putExtra("extra_data1",data1);
+                intent.putExtras(data1);
                 intent.putExtra("extra_data2",data2);
                 startActivity(intent);
             }
@@ -111,6 +135,21 @@ public class SearchFragment extends Fragment {
         Intent intent = new Intent(getActivity(),AudioService.class);
 
         getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+    }
+
+    public void showListView(){
+        ret2.clear();
+        String inputText=input.getText().toString();
+        for(int i = 0; i < ret1.size();i++){
+            if(ret1.get(i).getSongName().indexOf(inputText) != -1 || ret1.get(i).getSingerName().indexOf(inputText) != -1){
+                ret2.add(ret1.get(i));
+                Log.d("ret2",ret1.get(i).getSongName());
+
+            }
+        }
+        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 

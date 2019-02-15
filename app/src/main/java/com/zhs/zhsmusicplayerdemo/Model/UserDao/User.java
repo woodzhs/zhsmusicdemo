@@ -14,6 +14,14 @@ public class User {
         this.nickName = "";
     }
 
+    public int getUid(){
+        return this.uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     public String getAccount(){
         return this.account;
     }
