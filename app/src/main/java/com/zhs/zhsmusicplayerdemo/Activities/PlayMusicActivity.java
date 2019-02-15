@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -14,9 +15,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -57,7 +60,9 @@ public class PlayMusicActivity extends Activity {
     private NotificationManager nm;
     private RemoteViews contentViews;
     private Notification notify;
-    private int NOTIFICATION_ID = 123;
+    private static final int NOTIFICATION_ID = 123;
+    private static final String CHANNEL_ID = "MUSICNOTIFICATIONID";
+    private static final String CHANNEL_NAME = "MUSICNOTIFICATION";
     private boolean showNotification;
 
     public AudioService audioService;
@@ -229,15 +234,25 @@ public class PlayMusicActivity extends Activity {
     }
 
     private void initNotification(){
-        nm = (NotificationManager)this.getSystemService(NOTIFICATION_SERVICE);
+
+        if(nm == null){
+            nm = (NotificationManager)this.getSystemService(NOTIFICATION_SERVICE);
+        }
+
         Intent mainIntent = new Intent(PlayMusicActivity.this, PlayMusicActivity.class);
         PendingIntent pi = PendingIntent.getActivity(PlayMusicActivity.this, 0, mainIntent, 0);
-        notify = new Notification();
+        if(Build.VERSION.SDK_INT >= 26){
+            createNotificationChannel(nm);
+            notify = new Notification.Builder(getApplicationContext(),CHANNEL_ID).build();
+        }else {
+            notify = new Notification();
+        }
         notify.when = System.currentTimeMillis();
-//        notify.icon = R.drawable.musictap;
+        notify.icon = R.drawable.musictap;
         notify.contentIntent = pi;//点击通知跳转到MainActivity
         notify.flags = Notification.FLAG_AUTO_CANCEL;
         contentViews = new RemoteViews(getPackageName(), R.layout.notification);
+        contentViews.setOnClickPendingIntent(R.id.playtag, pi);
         contentViews.setOnClickPendingIntent(R.id.currentmusic, pi);
         //上一首图标添加点击监听
         Intent previousButtonIntent = new Intent("ACTION_PRE_SONG");
@@ -252,10 +267,16 @@ public class PlayMusicActivity extends Activity {
         PendingIntent pendNextButtonIntent = PendingIntent.getBroadcast(this, 0, nextButtonIntent, 0);
         contentViews.setOnClickPendingIntent(R.id.next, pendNextButtonIntent);
         //退出监听
-        Intent exitButton = new Intent("ACTION_EXIT");
-        PendingIntent pendingExitButtonIntent = PendingIntent.getBroadcast(this,0,exitButton,0);
-        contentViews.setOnClickPendingIntent(R.id.close,pendingExitButtonIntent);
+//        Intent exitButton = new Intent("ACTION_EXIT");
+//        PendingIntent pendingExitButtonIntent = PendingIntent.getBroadcast(this,0,exitButton,0);
+//        contentViews.setOnClickPendingIntent(R.id.close,pendingExitButtonIntent);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void createNotificationChannel(NotificationManager notificationManager) {
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void showNotification() {
@@ -264,7 +285,6 @@ public class PlayMusicActivity extends Activity {
         contentViews.setTextViewText(R.id.currentmusic, ret.get(currentMusicIndex).getSongName() + "—" + ret.get(currentMusicIndex).getSingerName());
 
         notify.contentView = contentViews;
-
         nm.notify(NOTIFICATION_ID, notify);//调用notify方法后即可显示通知
     }
 
@@ -306,7 +326,9 @@ public class PlayMusicActivity extends Activity {
             audioService.playMusic();
         }
         endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
-//        animator.start();
+        contentViews.setTextViewText(R.id.currentmusic, ret.get(currentMusicIndex).getSongName() + "—" + ret.get(currentMusicIndex).getSingerName());
+        nm.notify(NOTIFICATION_ID, notify);
+        animator.start();
     }
 
     public void playLastMusic() {
@@ -323,6 +345,8 @@ public class PlayMusicActivity extends Activity {
             audioService.playMusic();
         }
         endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
+        contentViews.setTextViewText(R.id.currentmusic, ret.get(currentMusicIndex).getSongName() + "—" + ret.get(currentMusicIndex).getSingerName());
+        nm.notify(NOTIFICATION_ID, notify);
         animator.start();
     }
 

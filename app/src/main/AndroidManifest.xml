@@ -23,7 +23,10 @@
         </activity>
         <activity android:name=".Activities.MainActivity" ></activity>
         <activity android:name=".Activities.DescribeActivity" ></activity>
-        <activity android:name=".Activities.PlayMusicActivity" ></activity>
+        <activity
+            android:name=".Activities.PlayMusicActivity"
+            android:launchMode="singleTask"
+            ></activity>
         <activity android:name=".Activities.LoginActivityChoice" ></activity>
         <activity android:name=".Activities.LoginActivity" ></activity>
         <activity android:name=".Activities.RegisterActivity" ></activity>

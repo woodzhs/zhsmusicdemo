@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="#65cb65"
+    android:background="#ff0000"
     android:alpha="0.7"
     >
 
+    <ImageView
+        android:id="@+id/playtag"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:src="@drawable/musictap"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:id="@+id/currentmusic"
@@ -17,7 +25,8 @@
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:textSize="16dp"
-        android:textColor="#f00"
+        android:textColor="#000000"
+        android:text="音乐测试"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
@@ -28,35 +37,39 @@
     <ImageButton
         android:id="@+id/pre"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_media_previous"
+        android:layout_height="45dp"
+        android:scaleType="centerInside"
+        android:background="#ff0000"
+        android:src="@drawable/last"
         android:layout_weight="1"
         />
 
     <ImageButton
         android:id="@+id/playandpause"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:scaleType="centerInside"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
-
-        android:src="@android:drawable/ic_media_play" />
+        android:background="#ff0000"
+        android:src="@drawable/startmusic" />
 
     <ImageButton
         android:id="@+id/next"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:scaleType="centerInside"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
+        android:background="#ff0000"
+        android:src="@drawable/next" />
 
-        android:src="@android:drawable/ic_media_next" />
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:src="@android:drawable/ic_delete" />
+    <!--<ImageView-->
+        <!--android:id="@+id/close"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:src="@android:drawable/ic_delete" />-->
 
 </LinearLayout>
