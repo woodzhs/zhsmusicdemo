@@ -63,6 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:digits="1234567890"
+            android:inputType="numberPassword"
             android:maxLength="10"
             android:layout_weight="6"/>
 

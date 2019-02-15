@@ -41,13 +41,18 @@ public class ChangePasswordActivity extends Activity {
                 String old = oldPassword.getText().toString();
                 String newword = newPassword.getText().toString();
                 if(!newword.isEmpty()){
-                    if(dm.hadUser(new User(account,old))){
-                        dm.updatePassword(new User(account,newword));
-                        Toast.makeText(ChangePasswordActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                        finish();
+                    if(account.equals(curaccount)){
+                        if(dm.hadUser(new User(account,old))){
+                            dm.updatePassword(new User(account,newword));
+                            Toast.makeText(ChangePasswordActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else {
+                            Toast.makeText(ChangePasswordActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
+                        }
                     }else {
-                        Toast.makeText(ChangePasswordActivity.this,"该用户不存在",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasswordActivity.this,"账号不正确",Toast.LENGTH_SHORT).show();
                     }
+
                 }else {
                     Toast.makeText(ChangePasswordActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
                 }

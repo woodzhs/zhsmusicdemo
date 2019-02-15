@@ -64,6 +64,7 @@
             android:layout_height="match_parent"
             android:digits="1234567890"
             android:maxLength="10"
+            android:inputType="numberPassword"
             android:layout_weight="6"/>
 
     </LinearLayout>
