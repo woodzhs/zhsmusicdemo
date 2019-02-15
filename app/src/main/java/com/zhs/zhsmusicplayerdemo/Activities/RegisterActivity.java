@@ -34,14 +34,19 @@ public class RegisterActivity extends Activity {
                 String account = registerAccount.getText().toString();
                 String password = registerpassword.getText().toString();
                 User user = new User(account,password);
-                if(!dm.hadAccount(user)){
-                    dm.add(user);
-                    Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-                    startActivity(intent);
+                if(!account.isEmpty()&&!password.isEmpty()){
+                    if(!dm.hadAccount(user)){
+                        dm.add(user);
+                        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+                        startActivity(intent);
 
+                    }else {
+                        Toast.makeText(RegisterActivity.this,"账号已经被注册",Toast.LENGTH_SHORT).show();
+                    }
                 }else {
-                    Toast.makeText(RegisterActivity.this,"账号已经被注册",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"账号和密码不能空白",Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
