@@ -12,9 +12,7 @@ import com.zhs.zhsmusicplayerdemo.R;
 
 import java.util.List;
 
-/**
- * Created by 木头 on 2019/2/2.
- */
+
 public class MusicAdapter extends ArrayAdapter<MusicInfo> {
     private int resourceId;
     public MusicAdapter(Context context, int textViewResourceId, List<MusicInfo> objects){

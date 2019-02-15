@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by 木头 on 2019/2/2.
- */
+
 public class MusicInfo implements Parcelable {
     String singerName;
     String songName;

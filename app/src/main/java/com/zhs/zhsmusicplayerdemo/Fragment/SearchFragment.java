@@ -32,9 +32,7 @@ import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 木头 on 2019/2/7.
- */
+
 public class SearchFragment extends Fragment {
     private ListView listView;
     private ImageButton search;

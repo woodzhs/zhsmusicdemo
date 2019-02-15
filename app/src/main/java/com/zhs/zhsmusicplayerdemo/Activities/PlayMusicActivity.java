@@ -27,9 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by 木头 on 2019/2/1.
- */
+
 public class PlayMusicActivity extends Activity {
 
     private ImageView last;
