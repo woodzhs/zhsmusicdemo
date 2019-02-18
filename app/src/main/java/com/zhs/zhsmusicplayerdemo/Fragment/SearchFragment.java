@@ -160,5 +160,4 @@ public class SearchFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-
 }
