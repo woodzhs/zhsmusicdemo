@@ -91,6 +91,8 @@ public class MymusicFragment extends Fragment {
     }
 
 
+
+
     public void stopMusic(){
         Intent stopIntent=new Intent(getActivity(),AudioService.class);
         getActivity().unbindService(conn);

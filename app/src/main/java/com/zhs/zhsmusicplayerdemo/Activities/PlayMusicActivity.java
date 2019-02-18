@@ -89,7 +89,6 @@ public class PlayMusicActivity extends Activity {
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
             audioService = null;
         }
 
@@ -135,6 +134,7 @@ public class PlayMusicActivity extends Activity {
         unregisterReceiver(playMusicReceiver);
         Intent intent = new Intent(this, AudioService.class);
         this.stopService(intent);
+        audioService.stopSelf();
         record.clearAnimation();
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();

@@ -26,6 +26,7 @@
         <activity android:name=".Activities.DescribeActivity" ></activity>
         <activity
             android:name=".Activities.PlayMusicActivity"
+            android:launchMode="singleTask"
             ></activity>
         <activity android:name=".Activities.LoginActivityChoice" ></activity>
         <activity android:name=".Activities.LoginActivity" android:launchMode="singleTask" ></activity>
