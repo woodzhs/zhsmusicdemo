@@ -184,6 +184,7 @@ public class PlayMusicActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        audioService .player.stop();
                                         finish();
 
                                     }
