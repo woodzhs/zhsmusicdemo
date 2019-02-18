@@ -22,14 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity" ></activity>
+        <activity android:name=".Activities.MainActivity" android:launchMode="singleTask"></activity>
         <activity android:name=".Activities.DescribeActivity" ></activity>
         <activity
             android:name=".Activities.PlayMusicActivity"
-            android:launchMode="singleTask"
             ></activity>
         <activity android:name=".Activities.LoginActivityChoice" ></activity>
-        <activity android:name=".Activities.LoginActivity" ></activity>
+        <activity android:name=".Activities.LoginActivity" android:launchMode="singleTask" ></activity>
+        <activity android:name=".Activities.CollectionMusicActivity" ></activity>
         <activity android:name=".Activities.RegisterActivity" ></activity>
         <activity android:name=".Activities.ChangePasswordActivity" ></activity>
         <service android:name=".Service.AudioService"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for

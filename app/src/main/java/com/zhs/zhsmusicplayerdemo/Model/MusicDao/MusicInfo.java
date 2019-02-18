@@ -20,6 +20,7 @@ public class MusicInfo implements Parcelable {
     String songName;
     String filePath;
     String duration;
+    int isLike;
 
     public String getMd5() {
         return md5;
@@ -61,6 +62,14 @@ public class MusicInfo implements Parcelable {
         this.duration = duration;
     }
 
+    public int getIsLike(){
+        return isLike;
+    }
+
+    public void setIsLike(int isLike) {
+        this.isLike = isLike;
+    }
+
     public MusicInfo(){
 
     }
@@ -71,6 +80,7 @@ public class MusicInfo implements Parcelable {
         this.filePath = null;
         this.duration = null;
         this.md5 = null;
+        this.isLike = 0;
 
     }
 
@@ -193,6 +203,7 @@ public class MusicInfo implements Parcelable {
         parcel.writeString(songName);
         parcel.writeString(filePath);
         parcel.writeString(duration);
+        parcel.writeInt(isLike);
 
     }
 
@@ -205,6 +216,7 @@ public class MusicInfo implements Parcelable {
             app.songName = source.readString();
             app.filePath = source.readString();
             app.duration = source.readString();
+            app.isLike = source.readInt();
             return app;
         }
 

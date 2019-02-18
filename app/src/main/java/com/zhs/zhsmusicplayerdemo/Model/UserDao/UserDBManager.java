@@ -21,7 +21,7 @@ public class UserDBManager {
     public void add(User user){
         db.beginTransaction();
         try{
-            db.execSQL("INSERT INTO user VALUES(null,?,?,?)",
+            db.execSQL("INSERT INTO user VALUES(?,?,?)",
                                              new Object[]{user.getAccount(),user.getNickName(),user.getPassword()});
             db.setTransactionSuccessful();
         }catch (Exception e){

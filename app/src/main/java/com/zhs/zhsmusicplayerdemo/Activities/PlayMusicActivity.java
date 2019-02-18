@@ -131,11 +131,13 @@ public class PlayMusicActivity extends Activity {
 
     @Override
     protected void onDestroy(){
-        super.onDestroy();
         unbindService(conn);
-        audioService.stopSelf();
+        unregisterReceiver(playMusicReceiver);
+        Intent intent = new Intent(this, AudioService.class);
+        this.stopService(intent);
         record.clearAnimation();
         mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 
     @Override

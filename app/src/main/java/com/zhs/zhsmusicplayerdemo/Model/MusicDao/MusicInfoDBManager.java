@@ -1,5 +1,6 @@
 package com.zhs.zhsmusicplayerdemo.Model.MusicDao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,8 +25,8 @@ public class MusicInfoDBManager {
             db.beginTransaction();
             try{
                 if(!hadMusic(musicInfo)){
-                    db.execSQL("INSERT INTO music VALUES(?,?,?,?,?)",
-                            new Object[]{musicInfo.getMd5(),musicInfo.getSongName(),musicInfo.getSingerName(),musicInfo.getFilePath(),musicInfo.getDuration()});
+                    db.execSQL("INSERT INTO music VALUES(?,?,?,?,?,?)",
+                            new Object[]{musicInfo.getMd5(),musicInfo.getSongName(),musicInfo.getSingerName(),musicInfo.getFilePath(),musicInfo.getDuration(),musicInfo.getIsLike()});
                     db.setTransactionSuccessful();
                 }
                 else {
@@ -65,6 +66,46 @@ public class MusicInfoDBManager {
         }
         c.close();
         return musicInfos;
+    }
+
+    public List<MusicInfo> findAll(){
+        ArrayList<MusicInfo> musicInfos = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM music",null);
+        while (c.moveToNext()){
+            MusicInfo musicInfo = new MusicInfo();
+            musicInfo.setMd5(c.getString(c.getColumnIndex("md5")));
+            musicInfo.setSongName(c.getString(c.getColumnIndex("songname")));
+            musicInfo.setSingerName(c.getString(c.getColumnIndex("singername")));
+            musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
+            musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
+            musicInfo.setIsLike(c.getInt(c.getColumnIndex("islike")));
+            musicInfos.add(musicInfo);
+        }
+        c.close();
+        return musicInfos;
+    }
+
+    public List<MusicInfo> getCollection(){
+        ArrayList<MusicInfo> musicInfos = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM music where islike = 1",null);
+        while (c.moveToNext()){
+            MusicInfo musicInfo = new MusicInfo();
+            musicInfo.setMd5(c.getString(c.getColumnIndex("md5")));
+            musicInfo.setSongName(c.getString(c.getColumnIndex("songname")));
+            musicInfo.setSingerName(c.getString(c.getColumnIndex("singername")));
+            musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
+            musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
+            musicInfo.setIsLike(c.getInt(c.getColumnIndex("islike")));
+            musicInfos.add(musicInfo);
+        }
+        c.close();
+        return musicInfos;
+    }
+
+    public void updateLike(MusicInfo musicInfo){
+        ContentValues cv = new ContentValues();
+        cv.put("islike",musicInfo.getIsLike());
+        db.update("music",cv,"md5=?",new String[]{musicInfo.getMd5()});
     }
 
 

@@ -13,10 +13,10 @@ public class MusicPlayDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE IF NOT EXISTS user(uid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " account VARCHAR,nickname VARCHAR,password VARCHAR)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS user(account VARCHAR PRIMARY KEY," +
+                " nickname VARCHAR,password VARCHAR)");
         db.execSQL("CREATE TABLE IF NOT EXISTS music(md5 VARCHAR PRIMARY KEY ," +
-                " songname VARCHAR,singername VARCHAR,filepath VARCHAR,duration VARCHAR)");
+                " songname VARCHAR,singername VARCHAR,filepath VARCHAR,duration VARCHAR,islike INTEGER)");
 
     }
 

@@ -38,11 +38,11 @@ public class LoginActivity extends Activity {
                 String password = loginpassword.getText().toString();
                 User user = new User(account,password);
                 if(dm.hadUser(user)){
+                    Toast.makeText(LoginActivity.this,"登陆成功，请稍等",Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                     intent.putExtra("account",account);
                     intent.putExtra("password",password);
                     startActivity(intent);
-                    Toast.makeText(LoginActivity.this,"登陆成功，请稍等",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(LoginActivity.this,"账号或密码错误",Toast.LENGTH_SHORT).show();
                 }

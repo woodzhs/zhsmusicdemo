@@ -1,7 +1,6 @@
 package com.zhs.zhsmusicplayerdemo.Model.UserDao;
 
 public class User {
-    private int uid;
     private String account;
     private String nickName;
     private String password;
@@ -12,14 +11,6 @@ public class User {
         this.account = account;
         this.password = password;
         this.nickName = "";
-    }
-
-    public int getUid(){
-        return this.uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
     }
 
     public String getAccount(){

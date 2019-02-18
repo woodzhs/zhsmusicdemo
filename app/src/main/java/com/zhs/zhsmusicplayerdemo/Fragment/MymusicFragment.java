@@ -66,6 +66,8 @@ public class MymusicFragment extends Fragment {
         ret=MusicInfo.getAllMusicFiles(path);
         dm.add(ret);
         dm.clearDB(ret);
+        ret.clear();
+        ret = dm.findAll();
         MusicAdapter adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
