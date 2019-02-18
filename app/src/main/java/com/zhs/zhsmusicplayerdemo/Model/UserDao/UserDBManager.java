@@ -5,14 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.zhs.zhsmusicplayerdemo.Model.MusicPlayDBHelper;
+
 import java.util.ArrayList;
 
 public class UserDBManager {
-    private UserDBHelper helper;
+    private MusicPlayDBHelper helper;
     private SQLiteDatabase db;
 
     public UserDBManager(Context context){
-        helper = new UserDBHelper(context);
+        helper = new MusicPlayDBHelper(context);
         db = helper.getWritableDatabase();
     }
 
@@ -49,7 +51,6 @@ public class UserDBManager {
     }
 
     public Boolean hadAccount(User user){
-        ArrayList<User> users = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM user", null);
         while (c.moveToNext()){
             String account = c.getString(c.getColumnIndex("account"));

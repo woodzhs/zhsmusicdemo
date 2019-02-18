@@ -39,6 +39,7 @@ public class RegisterActivity extends Activity {
                         dm.add(user);
                         Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
                         startActivity(intent);
+                        Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
 
                     }else {
                         Toast.makeText(RegisterActivity.this,"账号已经被注册",Toast.LENGTH_SHORT).show();

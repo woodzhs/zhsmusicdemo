@@ -1,23 +1,29 @@
 package com.zhs.zhsmusicplayerdemo.Fragment;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfoDBManager;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
@@ -29,6 +35,7 @@ public class MymusicFragment extends Fragment {
 
     private ListView listView;
     public List<MusicInfo> ret=new ArrayList<>();
+    public MusicInfoDBManager dm;
     private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";
 
     public AudioService audioService;
@@ -52,12 +59,14 @@ public class MymusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View content = inflater.inflate(R.layout.fragment_mymusic, container,false);
+        dm = new MusicInfoDBManager(getContext());
         startMusic();
         listView = (ListView)content.findViewById(R.id.listView);
         ret.clear();
         ret=MusicInfo.getAllMusicFiles(path);
+        dm.add(ret);
+        dm.clearDB(ret);
         MusicAdapter adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret);
-
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,6 +101,9 @@ public class MymusicFragment extends Fragment {
 
         getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
     }
+
+
+
 
 
 

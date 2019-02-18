@@ -26,6 +26,7 @@ import com.zhs.zhsmusicplayerdemo.Activities.LoginActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
+import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfoDBManager;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
@@ -37,9 +38,10 @@ public class SearchFragment extends Fragment {
     private ListView listView;
     private ImageButton search;
     private EditText input;
-    public List<MusicInfo> ret1 = new ArrayList<>();
+    private MusicInfoDBManager dm;
+//    public List<MusicInfo> ret1 = new ArrayList<>();
     public List<MusicInfo> ret2 = new ArrayList<>();
-    private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";;
+//    private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";;
     public AudioService audioService;
 
     private ServiceConnection conn= new ServiceConnection() {
@@ -65,8 +67,9 @@ public class SearchFragment extends Fragment {
         search = (ImageButton) content.findViewById(R.id.search);
         input = (EditText)content.findViewById(R.id.input_message);
         listView = (ListView)content.findViewById(R.id.listView1);
-        ret1.clear();
-        ret1 = MusicInfo.getAllMusicFiles(path);
+        dm = new MusicInfoDBManager(getActivity());
+//        ret1.clear();
+//        ret1 = MusicInfo.getAllMusicFiles(path);
 
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -77,7 +80,13 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length() == 0){
-
+                    int size = ret2.size();
+                    if(size>0) {
+                        ret2.clear();
+                        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
                 }else {
                     showListView();
                 }
@@ -138,13 +147,14 @@ public class SearchFragment extends Fragment {
     public void showListView(){
         ret2.clear();
         String inputText=input.getText().toString();
-        for(int i = 0; i < ret1.size();i++){
-            if(ret1.get(i).getSongName().indexOf(inputText) != -1 || ret1.get(i).getSingerName().indexOf(inputText) != -1){
-                ret2.add(ret1.get(i));
-                Log.d("ret2",ret1.get(i).getSongName());
-
-            }
-        }
+        ret2 = dm.find(inputText);
+//        for(int i = 0; i < ret1.size();i++){
+//            if(ret1.get(i).getSongName().indexOf(inputText) != -1 || ret1.get(i).getSingerName().indexOf(inputText) != -1){
+//                ret2.add(ret1.get(i));
+//                Log.d("ret2",ret1.get(i).getSongName());
+//
+//            }
+//        }
         MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
