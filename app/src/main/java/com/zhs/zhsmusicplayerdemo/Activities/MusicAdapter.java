@@ -20,12 +20,10 @@ import java.util.List;
 
 public class MusicAdapter extends ArrayAdapter<MusicInfo> {
     private int resourceId;
-//    private MusicInfoDBManager musicInfoDBManager;
     private CollectionDBManager collectionDBManager;
     private String curaccount;
     public MusicAdapter(Context context, int textViewResourceId, List<MusicInfo> objects , String account){
         super(context,textViewResourceId,objects);
-//        musicInfoDBManager = new MusicInfoDBManager(getContext());
         collectionDBManager = new CollectionDBManager(getContext());
         resourceId = textViewResourceId;
         curaccount = account;
@@ -43,9 +41,6 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
         if(collectionDBManager.hadCollection(curaccount,musicInfo.getMd5())){
             like.setImageResource(R.drawable.hadliked);
         }
-//        if(musicInfo.getIsLike() == 1) {
-//            like.setImageResource(R.drawable.hadliked);
-//        }
 
         if(musicInfo.getFilePath() == null){
             like.setVisibility(View.INVISIBLE);
@@ -61,15 +56,7 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
                     collectionDBManager.add(curaccount,getItem(position).getMd5());
                     like.setImageResource(R.drawable.hadliked);
                 }
-//                if(getItem(position).getIsLike() == 1){
-//                    getItem(position).setIsLike( 0 );
-//                    like.setImageResource(R.drawable.like);
-//                    musicInfoDBManager.updateLike(getItem(position));
-//                }else {
-//                    getItem(position).setIsLike( 1 );
-//                    like.setImageResource(R.drawable.hadliked);
-//                    musicInfoDBManager.updateLike(getItem(position));
-//                }
+
             }
         });
         return view;

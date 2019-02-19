@@ -25,7 +25,6 @@ import java.util.List;
 public class CollectionMusicActivity extends Activity {
     private ListView collectionListView;
     private List<MusicInfo> ret = new ArrayList<>();
-//    private MusicInfoDBManager musicInfoDBManager;
     private CollectionDBManager collectionDBManager;
     private LinearLayout back;
     private String curAccount;
@@ -51,8 +50,6 @@ public class CollectionMusicActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
         startMusic();
-
-//        musicInfoDBManager = new MusicInfoDBManager(this);
         collectionListView = (ListView) findViewById(R.id.collectionlistview);
         back = (LinearLayout) findViewById(R.id.collectiontitlebar);
 
@@ -60,7 +57,6 @@ public class CollectionMusicActivity extends Activity {
         curAccount = intent.getStringExtra("account");
         collectionDBManager = new CollectionDBManager(this);
         ret = collectionDBManager.findCollectionMusic(curAccount);
-//        ret = musicInfoDBManager.getCollection();
         MusicAdapter adapter=new MusicAdapter(this,R.layout.music_item,ret,curAccount);
         collectionListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
