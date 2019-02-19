@@ -73,6 +73,7 @@ public class MainActivity extends FragmentActivity {
         mFragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(),mFragmentList);
 
         viewPager.setAdapter(mFragmentAdapter);
+        viewPager.setOffscreenPageLimit(4);
 
         myMusicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
