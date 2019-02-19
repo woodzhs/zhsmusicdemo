@@ -34,7 +34,7 @@ public class PopularMusicFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View chatView = inflater.inflate(R.layout.fragment_popularmusic, container,false);
         listView1 = (ListView)chatView.findViewById(R.id.listView1);
-         adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1);
+        adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1,null);
         listView1.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return chatView;

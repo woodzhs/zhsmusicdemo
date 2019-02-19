@@ -11,9 +11,13 @@ import android.os.IBinder;
  */
 public class AudioService extends Service implements MediaPlayer.OnCompletionListener{
 
-    public MediaPlayer player;
+    private MediaPlayer player;
 
     static String form = "";
+
+    public MediaPlayer getPlayer(){
+        return player;
+    }
 
     private final IBinder binder = new AudioBinder();
     @Override

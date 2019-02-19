@@ -115,8 +115,8 @@ public class PlayMusicActivity extends Activity {
         public void handleMessage(Message msg){
             switch ((msg.what)){
                 case 0:
-                    int position = audioService.player.getCurrentPosition();
-                    int time = audioService.player.getDuration();
+                    int position = audioService.getPlayer().getCurrentPosition();
+                    int time = audioService.getPlayer().getDuration();
                     curTime.setText(formatTime(position));
                     int max = seekBar.getMax();
                     seekBar.setProgress(position*max/time);
@@ -184,7 +184,7 @@ public class PlayMusicActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        audioService .player.stop();
+                                        audioService .getPlayer().stop();
                                         finish();
 
                                     }
@@ -226,10 +226,10 @@ public class PlayMusicActivity extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int dest = seekBar.getProgress();
-                int time = audioService.player.getDuration();
+                int time = audioService.getPlayer().getDuration();
                 int max = seekBar.getMax();
 
-                audioService.player.seekTo(time * dest / max);
+                audioService.getPlayer().seekTo(time * dest / max);
             }
         });
 

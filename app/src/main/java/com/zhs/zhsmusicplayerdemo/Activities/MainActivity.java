@@ -39,18 +39,26 @@ public class MainActivity extends FragmentActivity {
     private String currentAccount;
     private String currentpassword;
 
+    public String getCurrentAccount() {
+        return currentAccount;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        currentAccount = intent.getStringExtra("account");
+        currentpassword = intent.getStringExtra("password");
+
         myMusicBtn = (ImageButton) findViewById(R.id.mymusicbtn);
         searchBtn = (ImageButton) findViewById(R.id.searchbtn);
         popularMusicbtn = (ImageButton) findViewById(R.id.popularmusicbtn);
         userCenterbtn = (ImageButton) findViewById(R.id.usercenterbtn);
 
-        mymusicFragment = new MymusicFragment();
+        mymusicFragment = new MymusicFragment(currentAccount);
         searchFragment = new SearchFragment();
         popularMusicFragment = new PopularMusicFragment();
         userCenterFragment = new UserCenterFragment();
@@ -70,12 +78,14 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(0);
+                mymusicFragment.setCurAccount(currentAccount);
             }
         });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchFragment.setCurAccount(currentAccount);
                 viewPager.setCurrentItem(1);
             }
         });
@@ -83,22 +93,24 @@ public class MainActivity extends FragmentActivity {
         popularMusicbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(2);
                 popularMusicFragment.getInternetData();
+                viewPager.setCurrentItem(2);
             }
         });
 
         userCenterbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(3);
                 Intent intent = getIntent();
                 currentAccount = intent.getStringExtra("account");
                 currentpassword = intent.getStringExtra("password");
+                viewPager.setCurrentItem(3);
                 userCenterFragment.setUser(currentAccount,currentpassword);
             }
         });
 
 
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.zhs.zhsmusicplayerdemo.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.zhs.zhsmusicplayerdemo.Activities.MainActivity;
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
@@ -31,11 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressLint("ValidFragment")
 public class MymusicFragment extends Fragment {
 
     private ListView listView;
     public List<MusicInfo> ret=new ArrayList<>();
     public MusicInfoDBManager dm;
+    public String curAccount;
     private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";
 
     public AudioService audioService;
@@ -54,6 +58,13 @@ public class MymusicFragment extends Fragment {
 
     };
 
+    @SuppressLint("ValidFragment")
+    public MymusicFragment(String account){
+        super();
+        setCurAccount(account);
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -68,7 +79,7 @@ public class MymusicFragment extends Fragment {
         dm.clearDB(ret);
         ret.clear();
         ret = dm.findAll();
-        MusicAdapter adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret);
+        MusicAdapter adapter=new MusicAdapter(this.getActivity(),R.layout.music_item,ret,curAccount);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,8 +101,9 @@ public class MymusicFragment extends Fragment {
         return content;
     }
 
-
-
+    public void setCurAccount(String account){
+        this.curAccount = account;
+    }
 
     public void stopMusic(){
         Intent stopIntent=new Intent(getActivity(),AudioService.class);

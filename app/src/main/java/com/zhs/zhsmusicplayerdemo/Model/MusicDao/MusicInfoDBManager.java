@@ -47,6 +47,7 @@ public class MusicInfoDBManager {
             String filePath = c.getString(c.getColumnIndex("filepath"));
             File file = new File(filePath);
             if(!file.exists()){
+                db.execSQL("delete from collection where md5= ?",new Object[]{c.getString(c.getColumnIndex("md5"))});
                 db.execSQL("delete from music where md5= ?",new Object[]{c.getString(c.getColumnIndex("md5"))});
             }
         }

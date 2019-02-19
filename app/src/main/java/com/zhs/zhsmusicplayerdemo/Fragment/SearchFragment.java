@@ -39,9 +39,8 @@ public class SearchFragment extends Fragment {
     private ImageButton search;
     private EditText input;
     private MusicInfoDBManager dm;
-//    public List<MusicInfo> ret1 = new ArrayList<>();
+    private String curAccount;
     public List<MusicInfo> ret2 = new ArrayList<>();
-//    private static String path = Environment.getExternalStorageDirectory().getPath() + "/Music/";;
     public AudioService audioService;
 
     private ServiceConnection conn= new ServiceConnection() {
@@ -83,7 +82,7 @@ public class SearchFragment extends Fragment {
                     int size = ret2.size();
                     if(size>0) {
                         ret2.clear();
-                        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
+                        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2,curAccount);
                         listView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
@@ -155,9 +154,13 @@ public class SearchFragment extends Fragment {
 //
 //            }
 //        }
-        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2);
+        MusicAdapter adapter = new MusicAdapter(getActivity(),R.layout.music_item,ret2,curAccount);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    public void setCurAccount(String account){
+        this.curAccount = account;
     }
 
 }

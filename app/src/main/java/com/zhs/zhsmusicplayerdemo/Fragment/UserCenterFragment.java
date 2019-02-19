@@ -78,6 +78,7 @@ public class UserCenterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),CollectionMusicActivity.class);
+                intent.putExtra("account",curAccount);
                 startActivity(intent);
             }
         });
@@ -86,8 +87,9 @@ public class UserCenterFragment extends Fragment {
     }
 
     public void setUser(String curaccount,String curpassword){
-        account.setText(curaccount);
         this.curAccount = curaccount;
         this.curPassword = curpassword;
+        account.setText(curaccount);
+
     }
 }

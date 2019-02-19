@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zhs.zhsmusicplayerdemo.Model.CollectionDAO.Collection;
+import com.zhs.zhsmusicplayerdemo.Model.CollectionDAO.CollectionDBManager;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfoDBManager;
 import com.zhs.zhsmusicplayerdemo.R;
@@ -18,11 +20,15 @@ import java.util.List;
 
 public class MusicAdapter extends ArrayAdapter<MusicInfo> {
     private int resourceId;
-    private MusicInfoDBManager musicInfoDBManager;
-    public MusicAdapter(Context context, int textViewResourceId, List<MusicInfo> objects){
+//    private MusicInfoDBManager musicInfoDBManager;
+    private CollectionDBManager collectionDBManager;
+    private String curaccount;
+    public MusicAdapter(Context context, int textViewResourceId, List<MusicInfo> objects , String account){
         super(context,textViewResourceId,objects);
-        musicInfoDBManager = new MusicInfoDBManager(getContext());
+//        musicInfoDBManager = new MusicInfoDBManager(getContext());
+        collectionDBManager = new CollectionDBManager(getContext());
         resourceId = textViewResourceId;
+        curaccount = account;
     }
 
     @Override
@@ -34,9 +40,12 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
         final ImageView like = (ImageView) view.findViewById(R.id.like);
         songname.setText(musicInfo.getSongName());
         singername.setText(musicInfo.getSingerName());
-        if(musicInfo.getIsLike() == 1) {
+        if(collectionDBManager.hadCollection(curaccount,musicInfo.getMd5())){
             like.setImageResource(R.drawable.hadliked);
         }
+//        if(musicInfo.getIsLike() == 1) {
+//            like.setImageResource(R.drawable.hadliked);
+//        }
 
         if(musicInfo.getFilePath() == null){
             like.setVisibility(View.INVISIBLE);
@@ -45,15 +54,22 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getItem(position).getIsLike() == 1){
-                    getItem(position).setIsLike( 0 );
+                if(collectionDBManager.hadCollection(curaccount,getItem(position).getMd5())){
+                    collectionDBManager.delete(curaccount,getItem(position).getMd5());
                     like.setImageResource(R.drawable.like);
-                    musicInfoDBManager.updateLike(getItem(position));
                 }else {
-                    getItem(position).setIsLike( 1 );
+                    collectionDBManager.add(curaccount,getItem(position).getMd5());
                     like.setImageResource(R.drawable.hadliked);
-                    musicInfoDBManager.updateLike(getItem(position));
                 }
+//                if(getItem(position).getIsLike() == 1){
+//                    getItem(position).setIsLike( 0 );
+//                    like.setImageResource(R.drawable.like);
+//                    musicInfoDBManager.updateLike(getItem(position));
+//                }else {
+//                    getItem(position).setIsLike( 1 );
+//                    like.setImageResource(R.drawable.hadliked);
+//                    musicInfoDBManager.updateLike(getItem(position));
+//                }
             }
         });
         return view;
