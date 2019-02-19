@@ -93,8 +93,8 @@ public class MainActivity extends FragmentActivity {
         popularMusicbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popularMusicFragment.getInternetData();
                 viewPager.setCurrentItem(2);
+                popularMusicFragment.getInternetData();
             }
         });
 

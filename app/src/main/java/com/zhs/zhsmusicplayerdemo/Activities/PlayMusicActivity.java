@@ -130,6 +130,7 @@ public class PlayMusicActivity extends Activity {
 
     @Override
     protected void onDestroy(){
+        audioService.getPlayer().stop();
         unbindService(conn);
         unregisterReceiver(playMusicReceiver);
         Intent intent = new Intent(this, AudioService.class);
