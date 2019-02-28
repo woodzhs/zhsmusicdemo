@@ -52,7 +52,7 @@ public class MusicAdapter extends ArrayAdapter<MusicInfo> {
         holder.singername.setText(musicInfo.getSingerName());
 //        holder.like.setImageResource(R.drawable.like);
 
-        if(musicInfo.getFilePath() == null){
+        if(musicInfo.getLocal() != 1){
             holder.like.setVisibility(View.INVISIBLE);
         }else {
             if(collectionDBManager.hadCollection(curaccount,musicInfo.getMd5())){

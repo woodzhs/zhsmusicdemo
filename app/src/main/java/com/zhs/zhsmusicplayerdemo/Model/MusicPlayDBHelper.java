@@ -16,7 +16,7 @@ public class MusicPlayDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS user(account VARCHAR PRIMARY KEY," +
                 " nickname VARCHAR,password VARCHAR)");
         db.execSQL("CREATE TABLE IF NOT EXISTS music(md5 VARCHAR PRIMARY KEY ," +
-                " songname VARCHAR,singername VARCHAR,filepath VARCHAR,duration VARCHAR,islike INTEGER)");
+                " songname VARCHAR,singername VARCHAR,filepath VARCHAR,duration VARCHAR,islike INTEGER,islocal INTEGER)");
         db.execSQL("CREATE TABLE IF NOT EXISTS collection(id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "account VARCHAR , md5 VARCHAR, FOREIGN KEY (account) REFERENCES user (account),FOREIGN KEY (md5) REFERENCES music (md5))");
 

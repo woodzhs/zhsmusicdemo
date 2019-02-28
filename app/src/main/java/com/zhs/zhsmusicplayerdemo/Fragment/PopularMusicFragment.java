@@ -1,42 +1,97 @@
 package com.zhs.zhsmusicplayerdemo.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
+import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
+import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class PopularMusicFragment extends Fragment {
 
-    private ListView listView1;
-    public List<MusicInfo> ret1 = new ArrayList<>();
+    private ListView listView;
+    private static List<MusicInfo> ret1 = new ArrayList<>();
+    private static RequestQueue queue;
     MusicAdapter adapter;
+
+    public AudioService audioService;
+
+    private ServiceConnection conn= new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+            audioService=null;
+        }
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            audioService=((AudioService.AudioBinder)binder).getService();
+        }
+
+
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View chatView = inflater.inflate(R.layout.fragment_popularmusic, container,false);
-        listView1 = (ListView)chatView.findViewById(R.id.listView1);
+        listView = (ListView)chatView.findViewById(R.id.listView1);
         adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1,null);
-        listView1.setAdapter(adapter);
+        listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        startMusic();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(audioService!=null) {
+                    String path = ret1.get(position).getFilePath();
+                    audioService.initOnlineMediaPlayer(path);
+                }
+                Bundle data1 = new Bundle();
+                data1.putParcelableArrayList("List",(ArrayList<? extends Parcelable>) ret1);
+                int data2=position;
+                Intent intent=new Intent(getActivity(),PlayMusicActivity.class);
+                intent.putExtras(data1);
+                intent.putExtra("extra_data2",data2);
+                startActivity(intent);
+            }
+        });
         return chatView;
     }
 
@@ -54,48 +109,89 @@ public class PopularMusicFragment extends Fragment {
     public void getInternetData()
     {
         ret1.clear();
+        queue = Volley.newRequestQueue(getContext());
+
         Loadhtml loadhtml = new Loadhtml();
         loadhtml.execute("");
+    }
+
+    public void startMusic(){
+        Intent intent = new Intent(getActivity(),AudioService.class);
+
+        getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
     }
 
     class Loadhtml extends AsyncTask<String, String, String>
     {
         ProgressDialog bar;
-        Document doc;
+        String url = "http://192.168.8.119:9999/musicinfo.json";
         @Override
         protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
-            try {
-                doc = Jsoup.connect("http://music.baidu.com/tag/%E6%B5%81%E8%A1%8C").timeout(5000).get();
-                Document content = Jsoup.parse(doc.toString());
-                Elements ul = content.select(".th-songlist");
-                Elements divs = ul.select(".info");
-                for(Element div : divs)
-                {
-                    Elements spans =div.select("span");
-                    Elements elements1 = spans.select(".name");
-                    Elements elements2 = spans.select(".author");
-                    String name = "";
-                    String singer = "";
-                    if(!elements1.isEmpty()){
-                        name = elements1.get(0).text();
-                    }
-                    if(!elements2.isEmpty()){
-                        singer = elements2.get(0).text();
-                    }
-                    if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(singer))
-                    {
-                        MusicInfo newitem=new MusicInfo(name,singer);
-                        ret1.add(newitem);
-                       // Log.d("music",String.format("name : %s singer: %s",spans.get(0).text(),spans.get(2).text()));
-                    }
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject s) {//s为请求返回的字符串数据
+                            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                            try {
+                                JSONArray musics = s.getJSONArray("musics");
 
+                                for(int i=0;i< musics.length();i++){
+                                    JSONObject musicItem = musics.getJSONObject(i);
+                                    String songName = musicItem.getString("songname");
+                                    String singerName = musicItem.getString("singer");
+                                    String path = musicItem.getString("url");
+                                    String duration = "";
+
+                                    try {
+                                        mmr.setDataSource(path,new HashMap());
+                                        duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+
+                                    } catch (Exception e) {
+
+                                        e.printStackTrace();
+                                    }
+
+                                    MusicInfo musicInfo = new MusicInfo(songName,singerName,path);
+                                    musicInfo.setLocal(0);
+                                    musicInfo.setDuration(duration);
+                                    ret1.add(musicInfo);
+                                }
+                                PopularMusicFragment.this.adapter.notifyDataSetChanged();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }finally {
+                                mmr.release();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(getActivity(),volleyError.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    })
+            {
+                protected Response<JSONObject>  parseNetworkResponse(NetworkResponse response)
+                {
+                    JSONObject jsonObject;
+                    try {
+                        jsonObject = new JSONObject(new String(response.data,"UTF-8"));
+                        return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return Response.error(new ParseError(e));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return Response.error(new ParseError(e));
+                    }
                 }
 
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            };
+            //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
+            request.setTag("testGet");
+            //将请求加入全局队列中
+            queue.add(request);
             return null;
         }
 
@@ -105,7 +201,6 @@ public class PopularMusicFragment extends Fragment {
             super.onPostExecute(result);
             //            Log.d("doc", doc.toString().trim());
             bar.dismiss();
-            PopularMusicFragment.this.adapter.notifyDataSetChanged();
 
         }
 

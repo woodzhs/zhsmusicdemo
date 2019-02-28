@@ -25,8 +25,8 @@ public class MusicInfoDBManager {
             db.beginTransaction();
             try{
                 if(!hadMusic(musicInfo)){
-                    db.execSQL("INSERT INTO music VALUES(?,?,?,?,?,?)",
-                            new Object[]{musicInfo.getMd5(),musicInfo.getSongName(),musicInfo.getSingerName(),musicInfo.getFilePath(),musicInfo.getDuration(),musicInfo.getIsLike()});
+                    db.execSQL("INSERT INTO music VALUES(?,?,?,?,?,?,?)",
+                            new Object[]{musicInfo.getMd5(),musicInfo.getSongName(),musicInfo.getSingerName(),musicInfo.getFilePath(),musicInfo.getDuration(),musicInfo.getIsLike(),musicInfo.getLocal()});
                     db.setTransactionSuccessful();
                 }
                 else {
@@ -63,6 +63,7 @@ public class MusicInfoDBManager {
             musicInfo.setSingerName(c.getString(c.getColumnIndex("singername")));
             musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
             musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
+            musicInfo.setLocal(c.getInt(c.getColumnIndex("islocal")));
             musicInfos.add(musicInfo);
         }
         c.close();
@@ -80,6 +81,7 @@ public class MusicInfoDBManager {
             musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
             musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
             musicInfo.setIsLike(c.getInt(c.getColumnIndex("islike")));
+            musicInfo.setLocal(c.getInt(c.getColumnIndex("islocal")));
             musicInfos.add(musicInfo);
         }
         c.close();
@@ -97,6 +99,7 @@ public class MusicInfoDBManager {
             musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
             musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
             musicInfo.setIsLike(c.getInt(c.getColumnIndex("islike")));
+            musicInfo.setLocal(c.getInt(c.getColumnIndex("islocal")));
             musicInfos.add(musicInfo);
         }
         c.close();

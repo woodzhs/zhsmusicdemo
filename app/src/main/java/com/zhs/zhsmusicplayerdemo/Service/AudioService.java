@@ -2,6 +2,7 @@ package com.zhs.zhsmusicplayerdemo.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
@@ -46,6 +47,7 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
         super.onCreate();
         //我们从raw文件夹中获取一个应用自带的mp3文件
         player = new MediaPlayer();
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         player.setOnCompletionListener(this);
     }
 
@@ -58,6 +60,29 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
                 player.prepare();
 
                 form=path;
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void initOnlineMediaPlayer(String path){
+        if(!form.equals(path)) {
+            try {
+                player.stop();
+                player.reset();
+                player.setDataSource(path);
+                player.prepareAsync();
+                form=path;
+                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                    }
+                });
 
 
             } catch (Exception e) {

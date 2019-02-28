@@ -20,6 +20,7 @@ public class MusicInfo implements Parcelable {
     String songName;
     String filePath;
     String duration;
+    int isLocal;
     int isLike;
 
     public String getMd5() {
@@ -70,16 +71,25 @@ public class MusicInfo implements Parcelable {
         this.isLike = isLike;
     }
 
+    public void setLocal(int local) {
+        isLocal = local;
+    }
+
+    public int getLocal() {
+        return isLocal;
+    }
+
     public MusicInfo(){
 
     }
-    public MusicInfo(String a,String b){
+    public MusicInfo(String a,String b,String c){
 
         this.songName = a;
         this.singerName = b;
-        this.filePath = null;
+        this.filePath = c;
         this.duration = null;
         this.md5 = null;
+        this.isLocal = 1;
         this.isLike = 0;
 
     }
@@ -125,6 +135,7 @@ public class MusicInfo implements Parcelable {
                     musicInfo.singerName = singerName;
                     musicInfo.duration = duration;
                     musicInfo.md5 = getFileMD5(filepath);
+                    musicInfo.isLocal = 1;
                     result.add(musicInfo);
                 } catch (Exception e) {
 
@@ -204,6 +215,7 @@ public class MusicInfo implements Parcelable {
         parcel.writeString(filePath);
         parcel.writeString(duration);
         parcel.writeInt(isLike);
+        parcel.writeInt(isLocal);
 
     }
 
@@ -217,6 +229,7 @@ public class MusicInfo implements Parcelable {
             app.filePath = source.readString();
             app.duration = source.readString();
             app.isLike = source.readInt();
+            app.isLocal = source.readInt();
             return app;
         }
 
