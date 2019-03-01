@@ -364,22 +364,6 @@ public class PlayMusicActivity extends Activity {
                 mHandler.postDelayed(this,1000);
             }
         },1000);
-//        final int milliseconds=1;
-//        new Thread(){
-//            @Override
-//            public void run(){
-//                while(true){
-//                    try{
-//                        sleep(milliseconds);
-//                    }catch (InterruptedException e){
-//                        e.printStackTrace();
-//                    }
-//
-//                    mHandler.sendEmptyMessage(0);
-//                }
-//            }
-//        }.start();
-
     }
 
     private String formatTime(int length){

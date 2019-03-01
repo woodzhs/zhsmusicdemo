@@ -82,6 +82,7 @@ public class PopularMusicFragment extends Fragment {
                 if(audioService!=null) {
                     String path = ret1.get(position).getFilePath();
                     audioService.initOnlineMediaPlayer(path);
+                    audioService.playMusic();
                 }
                 Bundle data1 = new Bundle();
                 data1.putParcelableArrayList("List",(ArrayList<? extends Parcelable>) ret1);
@@ -141,17 +142,7 @@ public class PopularMusicFragment extends Fragment {
                                     String songName = musicItem.getString("songname");
                                     String singerName = musicItem.getString("singer");
                                     String path = musicItem.getString("url");
-                                    String duration = "";
-
-                                    try {
-                                        mmr.setDataSource(path,new HashMap());
-                                        duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-
-                                    } catch (Exception e) {
-
-                                        e.printStackTrace();
-                                    }
-
+                                    String duration = musicItem.getString("time");
                                     MusicInfo musicInfo = new MusicInfo(songName,singerName,path);
                                     musicInfo.setLocal(0);
                                     musicInfo.setDuration(duration);

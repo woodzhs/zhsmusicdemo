@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -74,15 +75,15 @@ public class AudioService extends Service implements MediaPlayer.OnCompletionLis
             try {
                 player.stop();
                 player.reset();
-                player.setDataSource(path);
-                player.prepareAsync();
+                player.setDataSource(getApplication(), Uri.parse(path));
+                player.prepare();
                 form=path;
-                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                    }
-                });
+//                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        mp.start();
+//                    }
+//                });
 
 
             } catch (Exception e) {

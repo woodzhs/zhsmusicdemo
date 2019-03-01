@@ -44,6 +44,8 @@ public class CollectionDBManager {
             musicInfo.setSingerName(c.getString(c.getColumnIndex("singername")));
             musicInfo.setFilePath(c.getString(c.getColumnIndex("filepath")));
             musicInfo.setDuration(c.getString(c.getColumnIndex("duration")));
+            musicInfo.setLocal(c.getInt(c.getColumnIndex("islocal")));
+            musicInfo.setIsLike(c.getInt(c.getColumnIndex("islike")));
             arrayList.add(musicInfo);
         }
         c.close();

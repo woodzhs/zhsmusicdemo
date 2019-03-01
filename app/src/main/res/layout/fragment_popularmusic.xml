@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:padding="10dp"
-        android:text="百度音乐前20首流行歌曲名单"
+        android:text="在线播放"
         android:textSize="18dp"
         android:textStyle="bold"
         android:textColor="#000000"
