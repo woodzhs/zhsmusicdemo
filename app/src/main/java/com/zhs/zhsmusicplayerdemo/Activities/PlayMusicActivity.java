@@ -50,6 +50,7 @@ public class PlayMusicActivity extends Activity {
     private ImageView record;
     private ImageView menu;
     private ImageView model;
+    private ImageView download;
     private LinearLayout back;
     private TextView name;
     private TextView song;
@@ -159,6 +160,7 @@ public class PlayMusicActivity extends Activity {
         next = (ImageView) findViewById(R.id.next);
         menu = (ImageView) findViewById(R.id.memu);
         model = (ImageView) findViewById(R.id.model);
+        download = (ImageView) findViewById(R.id.download);
         back = (LinearLayout) findViewById(R.id.titlebar);
         record = (ImageView) findViewById(R.id.record);
         name = (TextView) findViewById(R.id.name);
@@ -194,6 +196,12 @@ public class PlayMusicActivity extends Activity {
         filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         //注册广播接收
         registerReceiver(playMusicReceiver,filter);
+
+        if(currentAccount.isEmpty()){
+            download.setVisibility(View.VISIBLE);
+        }else {
+            download.setVisibility(View.INVISIBLE);
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
                                     @Override

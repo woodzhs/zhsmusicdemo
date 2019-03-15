@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zhs.zhsmusicplayerdemo.Model.UserDao.User;
@@ -20,6 +21,7 @@ public class ChangePasswordActivity extends Activity {
     private UserDBManager dm;
     private String curaccount;
     private String curpassword;
+    private LinearLayout changePasswordTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class ChangePasswordActivity extends Activity {
         changePasswrodAccount = (EditText) findViewById(R.id.changeaccountcontent);
         oldPassword = (EditText) findViewById(R.id.oldpassword);
         newPassword = (EditText) findViewById(R.id.newpassword);
+        changePasswordTitle = (LinearLayout) findViewById(R.id.changepasswordtitle);
         change = (Button) findViewById(R.id.change);
         dm = new UserDBManager(this);
         Intent intent = getIntent();
@@ -57,6 +60,13 @@ public class ChangePasswordActivity extends Activity {
                     Toast.makeText(ChangePasswordActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        changePasswordTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

@@ -169,6 +169,15 @@
         android:layout_height="30dp"
         android:src="@drawable/model1"/>
 
+    <ImageView
+        android:id="@+id/download"
+        android:layout_above="@id/seekbar"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="310dp"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/download"/>
+
 
 
 </RelativeLayout>
