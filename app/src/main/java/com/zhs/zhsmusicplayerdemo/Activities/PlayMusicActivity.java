@@ -49,6 +49,7 @@ public class PlayMusicActivity extends Activity {
     private ImageView next;
     private ImageView record;
     private ImageView menu;
+    private ImageView model;
     private LinearLayout back;
     private TextView name;
     private TextView song;
@@ -157,6 +158,7 @@ public class PlayMusicActivity extends Activity {
         last = (ImageView) findViewById(R.id.last);
         next = (ImageView) findViewById(R.id.next);
         menu = (ImageView) findViewById(R.id.memu);
+        model = (ImageView) findViewById(R.id.model);
         back = (LinearLayout) findViewById(R.id.titlebar);
         record = (ImageView) findViewById(R.id.record);
         name = (TextView) findViewById(R.id.name);
@@ -228,6 +230,24 @@ public class PlayMusicActivity extends Activity {
             @Override
             public void onClick(View v) {
                 actionAlertDialog();
+            }
+        });
+
+        model.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(audioService.getPlayer().isLooping()){
+                    audioService.getPlayer().setLooping(false);
+                    model.setImageResource(R.drawable.model1);
+                    next.setClickable(true);
+                    last.setClickable(true);
+
+                }else {
+                    audioService.getPlayer().setLooping(true);
+                    model.setImageResource(R.drawable.model2);
+                    next.setClickable(false);
+                    last.setClickable(false);
+                }
             }
         });
 
