@@ -63,6 +63,7 @@ public class MymusicFragment extends Fragment {
                 intent.putExtras(data1);
                 intent.putExtra("extra_data2",data2);
                 intent.putExtra("isonline",0);
+                intent.putExtra("account",curAccount);
                 startActivity(intent);
             }
         });

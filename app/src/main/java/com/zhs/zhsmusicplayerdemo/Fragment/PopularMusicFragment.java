@@ -47,7 +47,7 @@ public class PopularMusicFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View chatView = inflater.inflate(R.layout.fragment_popularmusic, container,false);
         listView = (ListView)chatView.findViewById(R.id.listView1);
-        adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1,null);
+        adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1,"");
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,6 +60,7 @@ public class PopularMusicFragment extends Fragment {
                 intent.putExtras(data1);
                 intent.putExtra("extra_data2",data2);
                 intent.putExtra("isonline",1);
+                intent.putExtra("account","");
                 startActivity(intent);
             }
         });

@@ -3,6 +3,7 @@ package com.zhs.zhsmusicplayerdemo.Activities;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,10 +21,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -43,6 +48,7 @@ public class PlayMusicActivity extends Activity {
     private ImageView pause;
     private ImageView next;
     private ImageView record;
+    private ImageView menu;
     private LinearLayout back;
     private TextView name;
     private TextView song;
@@ -52,6 +58,7 @@ public class PlayMusicActivity extends Activity {
     private ObjectAnimator animator;
     public List<MusicInfo> ret = new ArrayList<>();
     private int currentMusicIndex;
+    private String currentAccount;
     private int isOnline;
 
     private NotificationManager nm;
@@ -149,6 +156,7 @@ public class PlayMusicActivity extends Activity {
         pause = (ImageView) findViewById(R.id.pause);
         last = (ImageView) findViewById(R.id.last);
         next = (ImageView) findViewById(R.id.next);
+        menu = (ImageView) findViewById(R.id.memu);
         back = (LinearLayout) findViewById(R.id.titlebar);
         record = (ImageView) findViewById(R.id.record);
         name = (TextView) findViewById(R.id.name);
@@ -160,6 +168,7 @@ public class PlayMusicActivity extends Activity {
         ret = intent.getExtras().getParcelableArrayList("List");
         currentMusicIndex = intent.getIntExtra("extra_data2", 0);
         isOnline = intent.getIntExtra("isonline",0);
+        currentAccount = intent.getStringExtra("account");
         name.setText(ret.get(currentMusicIndex).getSingerName());
         song.setText(ret.get(currentMusicIndex).getSongName());
         endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
@@ -212,6 +221,13 @@ public class PlayMusicActivity extends Activity {
             @Override
             public void onClick(View v) {
                 playLastMusic();
+            }
+        });
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionAlertDialog();
             }
         });
 
@@ -283,6 +299,39 @@ public class PlayMusicActivity extends Activity {
     public void createNotificationChannel(NotificationManager notificationManager) {
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    private void actionAlertDialog(){
+        AlertDialog.Builder builder;
+        final AlertDialog alertDialog;
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.musicmemu,(ViewGroup)findViewById(R.id.layout_musicmemu));
+        ListView myListView = (ListView) layout.findViewById(R.id.musicmemulist);
+        MusicAdapter adapter=new MusicAdapter(this,R.layout.music_item,ret,"");
+        myListView.setAdapter(adapter);
+        builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        alertDialog = builder.create();
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(ret.get(position).getLocal() == 0){
+                    audioService.initOnlineMediaPlayer(ret.get(position).getFilePath());
+                    audioService.playMusic();
+                }else {
+                    audioService.initMediaPlayer(ret.get(position).getFilePath());
+                    audioService.playMusic();
+                }
+                name.setText(ret.get(position).getSingerName());
+                song.setText(ret.get(position).getSongName());
+                endTime.setText(formatTime(Integer.parseInt(ret.get(position).getDuration())));
+                curTime.setText(formatTime(0));
+                currentMusicIndex = position;
+                alertDialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void showNotification() {
