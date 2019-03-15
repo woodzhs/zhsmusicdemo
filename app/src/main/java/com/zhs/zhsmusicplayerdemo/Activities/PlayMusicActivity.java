@@ -145,7 +145,7 @@ public class PlayMusicActivity extends Activity {
         unbindService(conn);
         Intent intent = new Intent(this, AudioService.class);
         this.stopService(intent);
-//        audioService.stopSelf();
+        audioService.stopSelf();
         super.onDestroy();
     }
 
@@ -327,6 +327,7 @@ public class PlayMusicActivity extends Activity {
                 endTime.setText(formatTime(Integer.parseInt(ret.get(position).getDuration())));
                 curTime.setText(formatTime(0));
                 currentMusicIndex = position;
+                animator.start();
                 alertDialog.cancel();
             }
         });
