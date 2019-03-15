@@ -70,8 +70,6 @@ public class LoginActivity extends Activity {
             //申请权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
-        } else {
-            Toast.makeText(this, "授权成功！", Toast.LENGTH_SHORT).show();
         }
     }
 }
