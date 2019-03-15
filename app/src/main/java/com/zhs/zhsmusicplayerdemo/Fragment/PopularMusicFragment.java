@@ -1,15 +1,10 @@
 package com.zhs.zhsmusicplayerdemo.Fragment;
 
 import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -32,15 +26,12 @@ import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
-import com.zhs.zhsmusicplayerdemo.Service.AudioService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -51,22 +42,6 @@ public class PopularMusicFragment extends Fragment {
     private static RequestQueue queue;
     MusicAdapter adapter;
 
-    public AudioService audioService;
-
-    private ServiceConnection conn= new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-            audioService=null;
-        }
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder binder) {
-            audioService=((AudioService.AudioBinder)binder).getService();
-        }
-
-
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
@@ -75,21 +50,16 @@ public class PopularMusicFragment extends Fragment {
         adapter = new MusicAdapter(this.getActivity(),R.layout.music_item,ret1,null);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        startMusic();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(audioService!=null) {
-                    String path = ret1.get(position).getFilePath();
-                    audioService.initOnlineMediaPlayer(path);
-                    audioService.playMusic();
-                }
                 Bundle data1 = new Bundle();
                 data1.putParcelableArrayList("List",(ArrayList<? extends Parcelable>) ret1);
                 int data2=position;
                 Intent intent=new Intent(getActivity(),PlayMusicActivity.class);
                 intent.putExtras(data1);
                 intent.putExtra("extra_data2",data2);
+                intent.putExtra("isonline",1);
                 startActivity(intent);
             }
         });
@@ -116,11 +86,6 @@ public class PopularMusicFragment extends Fragment {
         loadhtml.execute("");
     }
 
-    public void startMusic(){
-        Intent intent = new Intent(getActivity(),AudioService.class);
-
-        getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
-    }
 
     class Loadhtml extends AsyncTask<String, String, String>
     {

@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,12 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
 import com.zhs.zhsmusicplayerdemo.Service.AudioService;
-
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +52,7 @@ public class PlayMusicActivity extends Activity {
     private ObjectAnimator animator;
     public List<MusicInfo> ret = new ArrayList<>();
     private int currentMusicIndex;
+    private int isOnline;
 
     private NotificationManager nm;
     private RemoteViews contentViews;
@@ -95,12 +92,16 @@ public class PlayMusicActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             audioService = ((AudioService.AudioBinder) binder).getService();
+            if(isOnline == 0){
+                audioService.initMediaPlayer(ret.get(currentMusicIndex).getFilePath());
+                audioService.playMusic();
+            }else {
+                audioService.initOnlineMediaPlayer(ret.get(currentMusicIndex).getFilePath());
+                audioService.playMusic();
+            }
             audioService.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-//                    currentMusicIndex++;
-//                    audioService.initMediaPlayer(ret.get(currentMusicIndex).filePath);
-//                    audioService.playMusic();
                     playNextMusic();
                 }
             });
@@ -130,14 +131,14 @@ public class PlayMusicActivity extends Activity {
 
     @Override
     protected void onDestroy(){
-        audioService.getPlayer().stop();
-        unbindService(conn);
-        unregisterReceiver(playMusicReceiver);
-        Intent intent = new Intent(this, AudioService.class);
-        this.stopService(intent);
-        audioService.stopSelf();
+//        audioService.getPlayer().stop();
         record.clearAnimation();
         mHandler.removeCallbacksAndMessages(null);
+        unregisterReceiver(playMusicReceiver);
+        unbindService(conn);
+        Intent intent = new Intent(this, AudioService.class);
+        this.stopService(intent);
+//        audioService.stopSelf();
         super.onDestroy();
     }
 
@@ -158,16 +159,18 @@ public class PlayMusicActivity extends Activity {
         Intent intent = getIntent();
         ret = intent.getExtras().getParcelableArrayList("List");
         currentMusicIndex = intent.getIntExtra("extra_data2", 0);
+        isOnline = intent.getIntExtra("isonline",0);
         name.setText(ret.get(currentMusicIndex).getSingerName());
         song.setText(ret.get(currentMusicIndex).getSongName());
         endTime.setText(this.formatTime(Integer.parseInt(ret.get(currentMusicIndex).getDuration())));
         curTime.setText(this.formatTime(0));
+        startMusic();
+
         animator = ObjectAnimator.ofFloat(record, "rotation", 0f, 360.0f);
         animator.setDuration(10000);
         animator.setInterpolator(new LinearInterpolator());//匀速
         animator.setRepeatCount(-1);//设置动画重复次数（-1代表一直转）
         animator.setRepeatMode(ValueAnimator.RESTART);//动画重复模式
-        startMusic();
         animator.start();
 
         initNotification();
