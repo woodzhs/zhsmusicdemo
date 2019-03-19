@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -26,13 +27,14 @@ import com.zhs.zhsmusicplayerdemo.Activities.MusicAdapter;
 import com.zhs.zhsmusicplayerdemo.Activities.PlayMusicActivity;
 import com.zhs.zhsmusicplayerdemo.Model.MusicDao.MusicInfo;
 import com.zhs.zhsmusicplayerdemo.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import static com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
+import static com.android.volley.DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
 
 
 public class PopularMusicFragment extends Fragment {
@@ -91,7 +93,7 @@ public class PopularMusicFragment extends Fragment {
     class Loadhtml extends AsyncTask<String, String, String>
     {
         ProgressDialog bar;
-        String url = "http://192.168.8.119:9999/musicinfo.json";
+        String url = "http://192.168.1.101:9999/musicinfo.json";
         @Override
         protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
@@ -147,6 +149,9 @@ public class PopularMusicFragment extends Fragment {
             };
             //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
             request.setTag("testGet");
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    DEFAULT_TIMEOUT_MS, DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
             //将请求加入全局队列中
             queue.add(request);
             return null;

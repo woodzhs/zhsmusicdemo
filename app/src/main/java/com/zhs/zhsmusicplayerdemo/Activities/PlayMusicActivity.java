@@ -141,6 +141,7 @@ public class PlayMusicActivity extends Activity {
     @Override
     protected void onDestroy(){
 //        audioService.getPlayer().stop();
+        audioService.setOnCompletionListener(null);
         record.clearAnimation();
         mHandler.removeCallbacksAndMessages(null);
         unregisterReceiver(playMusicReceiver);
